@@ -1,0 +1,279 @@
+{
+  "demo_id": "dpdp",
+  "bundle": "offer.json",
+  "doc_id": "demo-dpdp-offer",
+  "title": "PixelWorks offer letter - retention + outdated TDS",
+  "story": "A Delhi offer letter with 3-year post-exit retention, 72-hour breach notice, and an outdated 5% TDS cite (current 2% since 1-Oct-2024).",
+  "premise": "non-residential",
+  "pincode": "110001",
+  "text": "OFFER LETTER - Junior Designer, PixelWorks Studio, Delhi. Monthly salary of Rs 60,000. The company may collect personal data including contact and identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+  "docs": [
+    {
+      "doc_id": "demo-dpdp-offer",
+      "name": "demo-dpdp-offer.txt",
+      "text": "OFFER LETTER - Junior Designer, PixelWorks Studio, Delhi. Monthly salary of Rs 60,000. The company may collect personal data including contact and identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments."
+    }
+  ],
+  "audit": {
+    "risks": [
+      {
+        "rule_id": "R18",
+        "clause": "tds",
+        "excerpt": "or 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "start": 222,
+        "end": 490,
+        "status": "hit",
+        "tier": 3,
+        "note": "outdated 5% TDS rate (current 2% since 1-Oct-2024)",
+        "data": {}
+      }
+    ],
+    "missing": [
+      {
+        "rule_id": "R02",
+        "clause": "deposit",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      },
+      {
+        "rule_id": "R06",
+        "clause": "tenure",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      },
+      {
+        "rule_id": "R13",
+        "clause": "governing_law",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      }
+    ],
+    "obligations": [
+      {
+        "id": "OBL-1",
+        "statute": "Sec 194-IB",
+        "duty": "correct outdated TDS rate",
+        "computed": "agreement cites 5%; current rate 2% since 1-Oct-2024",
+        "deadline": "Form 26QC within 30 days + Form 16C",
+        "source_rule": "R18"
+      },
+      {
+        "id": "OBL-2",
+        "statute": "DPDP Act 2023",
+        "duty": "retention + deletion on request",
+        "computed": "retained 3 years after exit, deleted thereafter on written request",
+        "deadline": "delete on written request after 3 years",
+        "source_rule": "R16"
+      }
+    ],
+    "contradictions": [
+      {
+        "cid": "C4",
+        "excerpt": "or 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "start": 222,
+        "end": 490,
+        "note": "outdated 5% TDS — current 2% since 1-Oct-2024"
+      }
+    ],
+    "rule_count": 18
+  },
+  "simplify": {
+    "sentences": [
+      {
+        "text": "OFFER LETTER - Junior Designer, PixelWorks Studio, Delhi.",
+        "cite": {
+          "page": 1,
+          "start": 0,
+          "end": 57
+        }
+      },
+      {
+        "text": "Monthly salary of Rs 60,000.",
+        "cite": {
+          "page": 1,
+          "start": 58,
+          "end": 86
+        }
+      },
+      {
+        "text": "The company may collect personal data including contact and identity details for employment purposes.",
+        "cite": {
+          "page": 1,
+          "start": 87,
+          "end": 188
+        }
+      },
+      {
+        "text": "Personal data must be retained for 3 years after exit and deleted thereafter on written request.",
+        "cite": {
+          "page": 1,
+          "start": 189,
+          "end": 286
+        }
+      },
+      {
+        "text": "The company must notify breaches within 72 hours to the Data Protection Board.",
+        "cite": {
+          "page": 1,
+          "start": 287,
+          "end": 366
+        }
+      },
+      {
+        "text": "The employee must not disclose company trade secrets.",
+        "cite": {
+          "page": 1,
+          "start": 367,
+          "end": 421
+        }
+      },
+      {
+        "text": "TDS must be deducted at 5% under section 194-IB on salary payments.",
+        "cite": {
+          "page": 1,
+          "start": 422,
+          "end": 490
+        }
+      }
+    ],
+    "before": {
+      "fk": 10.47,
+      "fre": 38.06
+    },
+    "after": {
+      "fk": 10.47,
+      "fre": 38.06
+    },
+    "glossary": [],
+    "level": "8",
+    "lang": "en"
+  },
+  "qa": [
+    {
+      "question": "How long is personal data retained?",
+      "answer": "Personal data is retained for 3 years after exit and deleted thereafter on written request [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": " - Junior Designer, PixelWorks Studio, Delhi. Monthly salary of Rs 60,000. The company may collect personal data including contact and identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+          "start": 12,
+          "end": 490
+        }
+      ],
+      "abstain": null
+    },
+    {
+      "question": "Is the 5% TDS rate correct?",
+      "answer": "No - the agreement cites 5% but the current 194-IB rate is 2% since 1-Oct-2024 [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": "or 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+          "start": 222,
+          "end": 490
+        }
+      ],
+      "abstain": null
+    }
+  ],
+  "brief": {
+    "markdown": "# NyayaMitra — Lawyer Brief (1 page)\n\n> Information, not legal advice — verify with advocate\n\n## Facts\n- Agreement excerpt reviewed (18 clauses scanned, premise non-residential) [doc p.1]\n- Plain-language gist: OFFER LETTER - Junior Designer, PixelWorks Studio, Delhi. [doc p.1]\n\n## Risks\n- R18 tds tier T3 — outdated 5% TDS rate (current 2% since 1-Oct-2024) [doc p.1]\n\n## Missing\n- R02 deposit missing — verify before signing [doc p.1]\n- R06 tenure missing — verify before signing [doc p.1]\n- R13 governing_law missing — verify before signing [doc p.1]\n\n## Deadlines\n- Deposit refund within one month of vacant possession with itemised statement (MTA Sec 11) [doc p.1]\n- Overstay compensation 2x first 60 days then 4x (MTA Sec 23) [doc p.1]\n- TDS 2% on rent > Rs 50,000/mo since 1-Oct-2024; Form 26QC within 30 days + Form 16C, no TAN (Sec 194-IB) [doc p.1]\n\n## Questions for lawyer\n- Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]\n- Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]\n- Forum check: Delhi Rent Authority — ask lawyer if Rent Authority vs civil court fits your pincode [doc p.1]",
+    "redline_docx_path": "redline-demo-dpdp-offer.docx",
+    "questions_for_lawyer": [
+      "Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]",
+      "Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]",
+      "Forum check: Delhi Rent Authority — ask lawyer if Rent Authority vs civil court fits your pincode [doc p.1]"
+    ],
+    "verification_trail": [
+      {
+        "source": "R02",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R06",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R13",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R15",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R16",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R17",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R18",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      }
+    ],
+    "cites": [
+      {
+        "page": 1,
+        "start": 144,
+        "end": 490,
+        "excerpt": "nd identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "rule_id": "R15"
+      },
+      {
+        "page": 1,
+        "start": 12,
+        "end": 490,
+        "excerpt": " - Junior Designer, PixelWorks Studio, Delhi. Monthly salary of Rs 60,000. The company may collect personal data including contact and identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "rule_id": "R16"
+      },
+      {
+        "page": 1,
+        "start": 105,
+        "end": 490,
+        "excerpt": "llect personal data including contact and identity details for employment purposes. Personal data shall be retained for 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "rule_id": "R17"
+      },
+      {
+        "page": 1,
+        "start": 222,
+        "end": 490,
+        "excerpt": "or 3 years after exit and deleted thereafter on written request. The company shall notify breaches within 72 hours to the Data Protection Board. The employee shall not disclose company trade secrets. TDS shall be deducted at 5% under section 194-IB on salary payments.",
+        "rule_id": "R18"
+      }
+    ],
+    "disclaimer": "Information, not legal advice — verify with advocate"
+  },
+  "meta": {
+    "built_at": "2026-09-21T20:55:49.500615+00:00",
+    "engine": "app.engine.rules R01-R18 + maths M1/M2/M3 + contradict C1-C4",
+    "llm_live": false,
+    "served_from": "cache",
+    "cost_usd": 0.0,
+    "served": "cache-first when LLM_LIVE=0 or Aura paused"
+  }
+}

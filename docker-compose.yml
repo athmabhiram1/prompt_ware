@@ -1,0 +1,67 @@
+# LOCAL DEV ONLY. Production API runs on Render (see render.yaml) — never
+# FastAPI-on-Vercel. Keep this file for `docker compose up` local parity.
+version: '3.8'
+
+services:
+  nyayamitra-api:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    container_name: nyayamitra-api
+    ports:
+      - "8008:8000"
+    volumes:
+      - ./backend/rag_storage:/app/rag_storage
+      - ./backend/documents:/app/documents
+    env_file:
+      - .env
+    environment:
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+      - NEO4J_URI=neo4j://nyayamitra-neo4j:7687
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    depends_on:
+      nyayamitra-neo4j:
+        condition: service_healthy
+      nyayamitra-queue:
+        condition: service_started
+
+  nyayamitra-web:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+      args:
+        - VITE_API_BASE_URL=http://localhost:8008
+    container_name: nyayamitra-web
+    ports:
+      - "3000:3000"
+    environment:
+      - VITE_API_BASE_URL=http://localhost:8008
+    depends_on:
+      - nyayamitra-api
+
+  nyayamitra-neo4j:
+    image: neo4j:5.15-community
+    container_name: nyayamitra-neo4j
+    environment:
+      - NEO4J_AUTH=neo4j/nyayamitra_password
+    volumes:
+      - neo4j_data:/data
+      - neo4j_logs:/logs
+    healthcheck:
+      test: ["CMD-SHELL", "cypher-shell -u neo4j -p nyayamitra_password 'RETURN 1'"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+      start_period: 10s
+
+  nyayamitra-queue:
+    image: redis:7-alpine
+    container_name: nyayamitra-queue
+
+volumes:
+  neo4j_data:
+  neo4j_logs:
+
+

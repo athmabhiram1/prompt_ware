@@ -1,0 +1,21 @@
+lightrag-hku==1.5.7
+pymupdf
+python-dotenv
+httpx
+neo4j
+numpy
+pymongo
+asyncpg==0.31.0
+pgvector==0.5.0
+fastapi
+uvicorn
+python-multipart
+# LightRAG provider SDK dependencies — each is imported by lightrag.llm.*
+# groq must be explicit: lightrag uses pipmaster to auto-install it, but pipmaster
+# calls `pip install` which doesn't exist in a uv venv. List all of them here.
+openai
+groq
+google-genai
+ollama
+redis
+slowapi==0.1.10

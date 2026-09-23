@@ -1,0 +1,170 @@
+# =============================================================================
+# NyayaMitra — Render blueprint (PRODUCTION API)
+# =============================================================================
+# Hosting decision (plan §§3,5): FastAPI runs HERE on Render as a real
+# server (`uvicorn ... --workers 2`, persistent lifespan). NEVER
+# FastAPI-on-Vercel (500 MB bundle cap, 300 s function cap, no
+# workers/pooling). Vercel hosts the frontend ONLY.
+#
+# Cold-start path <60s (Starter plan never sleeps — no wake penalty):
+#   1. Render Starter web (0.5 CPU / 512 MB, no sleep)  ~5-10 s deploy boot
+#   2. Neon pooled Postgres wake (cold ~570 ms)          <1 s
+#   3. Aura Free resume (if 72 h auto-paused)            ~30-60 s worst case;
+#      while paused, API serves cache-first from data/preindex/*.json
+#      bundles (LLM_LIVE=0) instead of blocking on the graph.
+#   Total worst case ≈ 60 s; steady state ≈ a few seconds.
+#   Timing method: sum of vendor-verified budgets above (Render Starter
+#   no-sleep + Neon 570 ms wake + Aura resume window); re-time with
+#   `curl -w "%{time_total}" $API/health` after first deploy and record
+#   the receipt in .omo/notepads/nyayamitra/w1.4-deploy.md.
+#
+# Notes:
+# - Keepalive cron: documented ONLY for Free-staging. This blueprint uses
+#   Starter (no sleep), so NO keepalive cron is defined here. Do not add one.
+# - Vercel cron: ONLY for frontend cache refresh (vercel.json concern in
+#   the frontend). Never used to wake this API.
+# - Backend import path is `main:app` (backend/ is the build context and
+#   Docker WORKDIR). There is no `app/main.py`; do not "fix" the
+#   startCommand to `app.main:app` — it would crash on boot.
+# - `/health` is provided by W1.3 (health contract). This blueprint assumes
+#   it exists; if W1.3 is not yet merged, Render health checks fail until
+#   it lands. Do NOT edit W1.3 files from this task.
+# - Storage today: LightRAG Neo4JStorage (+ Mongo/JSON file fallback).
+#   No PGVector/PGKV in the engine yet (grep: 0 hits); DATABASE_URL below
+#   is the Neon pooled wiring reserved for the PGVector/HNSW migration
+#   (PGTableGraphStorage fallback documented in build_index.py).
+# =============================================================================
+
+services:
+  # ---- API (real server, Starter = no sleep) ------------------------------
+  - type: web
+    name: nyayamitra-api
+    runtime: python
+    plan: starter # 0.5 CPU / 512 MB, $7/mo, never sleeps
+    region: oregon # closest Render region to Aura Free (GCP us-central1)
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    # NEVER point at Vercel functions: real uvicorn with 2 workers.
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT --workers 2
+    healthCheckPath: /health # W1.3 contract (assumed present, see header)
+    numInstances: 1
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: FRONTEND_URL
+        sync: false # e.g. https://nyayamitra.vercel.app (no trailing slash)
+      # LLM live-gate: deterministic engine + preindex cache serve traffic.
+      - key: LLM_LIVE
+        value: "0"
+      - key: PRIMARY_LLM_PROVIDER
+        value: gemini # fallback order per AGENTS.md: gemini -> groq -> ollama
+      - key: EMBED_PROVIDER
+        value: gemini
+      - key: GEMINI_API_KEY
+        sync: false
+      - key: GROQ_API_KEY
+        sync: false
+      # NOTE: OLLAMA_BASE_URL intentionally UNSET in prod. The backend
+      # default (http://localhost:11434) is dead on Render; Ollama stays
+      # local-dev only (gated by W1.3). Do not add it here.
+      # ---- Neo4j Aura (warm graph) --------------------------------------
+      - key: NEO4J_TARGET
+        value: cloud
+      - key: NEO4J_CLOUD_URI
+        sync: false # Aura bolt URI, e.g. neo4j+s://xxxx.databases.neo4j.io
+      - key: NEO4J_CLOUD_USERNAME
+        sync: false
+      - key: NEO4J_CLOUD_PASSWORD
+        sync: false
+      - key: NEO4J_CLOUD_DATABASE
+        value: neo4j
+      # Canonical plan names (AURA_*); mirror of NEO4J_CLOUD_* above.
+      # scripts/aura_restore.sh reads AURA_*.
+      - key: AURA_URI
+        sync: false
+      - key: AURA_USERNAME
+        sync: false
+      - key: AURA_PASSWORD
+        sync: false
+      - key: AURA_DATABASE
+        value: neo4j
+      # ---- MongoDB Atlas (VDB + KV + DocStatus; else ephemeral fallback) --
+      - key: MONGO_URI
+        sync: false
+      - key: MONGO_DATABASE
+        value: nyayamitra
+      # ---- Neon Postgres (pooled; PG cutover live) ---------------------------
+      # Canonical: DATABASE_URL ONLY. The backend bridges it at boot
+      # (lightrag_engine._bridge_database_url_to_postgres_env) into the
+      # POSTGRES_HOST/PORT/USER/PASSWORD/DATABASE (+ POSTGRES_SSL_MODE=require)
+      # vars LightRAG's postgres_impl reads natively — LightRAG ignores
+      # DATABASE_URL, the bridge is the whole point. Explicit POSTGRES_* keys
+      # may be added below to override the bridge; the bridge never clobbers
+      # them. Pooled (pgbouncer) URLs: open the asyncpg pool with
+      # statement_cache_size=0 (transactional pooling cannot use prepared
+      # statements). Neon mandates TLS (sslmode=require, bridge default).
+      # Format: postgresql://USER:PASS@HOST/db?pgbouncer=true&connect_timeout=10
+      # `main` pooled branch for prod; `dev` branch for preview deploys.
+      - key: DATABASE_URL
+        sync: false
+      # ---- Queue broker: Render Key Value --------------------------------
+      - key: REDIS_HOST
+        fromDatabase:
+          name: nyayamitra-queue
+          property: host
+      - key: REDIS_PORT
+        fromDatabase:
+          name: nyayamitra-queue
+          property: port
+      - key: REDIS_PASSWORD
+        fromDatabase:
+          name: nyayamitra-queue
+          property: password
+      - key: REDIS_DB
+        value: "0"
+
+  # ---- Queue worker (optional; <512 MB note applies) -----------------------
+  # Runs the asyncio queue heartbeat against the same Render Key Value
+  # broker. Real ingest handling stays in-process (BackgroundTasks
+  # fallback in request_queue.py) until traffic justifies a dedicated
+  # drain — on a 512 MB instance do NOT add heavy handlers here.
+  # (`python -m app.worker` does not exist in this repo; this script is
+  # the equivalent entrypoint — see scripts/render_worker.py.)
+  - type: worker
+    name: nyayamitra-worker
+    runtime: python
+    plan: starter # downgrade/delete if staying on a tight memory budget
+    region: oregon
+    rootDir: backend
+    buildCommand: pip install -r requirements.txt
+    startCommand: python ../scripts/render_worker.py
+    envVars:
+      - key: APP_ENV
+        value: production
+      - key: PYTHON_VERSION
+        value: "3.12"
+      - key: LLM_LIVE
+        value: "0"
+      - key: REDIS_HOST
+        fromDatabase:
+          name: nyayamitra-queue
+          property: host
+      - key: REDIS_PORT
+        fromDatabase:
+          name: nyayamitra-queue
+          property: port
+      - key: REDIS_PASSWORD
+        fromDatabase:
+          name: nyayamitra-queue
+          property: password
+      - key: REDIS_DB
+        value: "0"
+
+databases:
+  # Queue broker for request_queue.py (REDIS_HOST/PORT/PASSWORD above).
+  - name: nyayamitra-queue
+    type: keyvalue # Render Key Value; free tier suffices for ingest queue
+    plan: free
+    region: oregon

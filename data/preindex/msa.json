@@ -1,0 +1,447 @@
+{
+  "demo_id": "priya",
+  "bundle": "msa.json",
+  "doc_id": "demo-priya-lease",
+  "title": "Priya's Bengaluru rental lease - Rs 30k rent, Rs 3L deposit",
+  "story": "Priya (tenant, HSR Layout Bengaluru) pays Rs 30,000/month rent with a Rs 3,00,000 deposit (10x rent). MTA Sec 11 caps residential deposits at 2 months and is persuasive-only in Karnataka; 194-IB TDS is 2%; the refund clock is 30 days.",
+  "premise": "residential",
+  "pincode": "560001",
+  "text": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+  "docs": [
+    {
+      "doc_id": "demo-priya-lease",
+      "name": "demo-priya-lease.txt",
+      "text": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession."
+    }
+  ],
+  "audit": {
+    "risks": [
+      {
+        "rule_id": "R01",
+        "clause": "deposit",
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 0,
+        "end": 771,
+        "status": "hit",
+        "tier": 4,
+        "note": "deposit 10mo exceeds 2mo statutory cap",
+        "data": {
+          "cap_months": 2.0,
+          "months": 10.0,
+          "amount": 30000.0
+        }
+      },
+      {
+        "rule_id": "R03",
+        "clause": "deposit",
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 0,
+        "end": 771,
+        "status": "hit",
+        "tier": 3,
+        "note": "deposit without refund timeline",
+        "data": {}
+      },
+      {
+        "rule_id": "R09",
+        "clause": "unilateral_amendment",
+        "excerpt": "ataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 60,
+        "end": 771,
+        "status": "hit",
+        "tier": 4,
+        "note": "",
+        "data": {}
+      },
+      {
+        "rule_id": "R11",
+        "clause": "indemnity",
+        "excerpt": "y the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 172,
+        "end": 771,
+        "status": "hit",
+        "tier": 4,
+        "note": "",
+        "data": {}
+      },
+      {
+        "rule_id": "R13",
+        "clause": "governing_law",
+        "excerpt": "ll indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 369,
+        "end": 771,
+        "status": "hit",
+        "tier": 3,
+        "note": "arbitration clause — review venue/seat",
+        "data": {}
+      },
+      {
+        "rule_id": "R15",
+        "clause": "data_protection",
+        "excerpt": "nt at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 295,
+        "end": 771,
+        "status": "hit",
+        "tier": 4,
+        "note": "personal data shared/sold",
+        "data": {}
+      }
+    ],
+    "missing": [
+      {
+        "rule_id": "R16",
+        "clause": "retention",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      }
+    ],
+    "obligations": [
+      {
+        "id": "OBL-1",
+        "statute": "MTA Sec 11",
+        "duty": "deposit cap 2 months residential",
+        "computed": "cap Rs 60000, deposit Rs 300000, excess Rs 240000, breach=True",
+        "deadline": "refund within 30 days of vacant possession with itemised statement",
+        "source_rule": "R01"
+      },
+      {
+        "id": "OBL-2",
+        "statute": "MTA Sec 11",
+        "duty": "30-day refund clock",
+        "computed": "deposit Rs 3,00,000 (10x rent Rs 30,000) vs cap Rs 60,000",
+        "deadline": "one month of vacant possession",
+        "source_rule": "R03"
+      },
+      {
+        "id": "OBL-3",
+        "statute": "Sec 194-IB",
+        "duty": "TDS on rent",
+        "computed": "rent Rs 30000 <= Rs 50000 threshold, applicable=False, rate 2% since 1-Oct-2024",
+        "deadline": "Form 26QC within 30 days + Form 16C, no TAN",
+        "source_rule": "R18"
+      }
+    ],
+    "contradictions": [
+      {
+        "cid": "C1",
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "start": 0,
+        "end": 771,
+        "note": "amount mismatch in one document: [30000.0, 300000.0]"
+      }
+    ],
+    "rule_count": 18
+  },
+  "simplify": {
+    "sentences": [
+      {
+        "text": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka).",
+        "cite": {
+          "page": 1,
+          "start": 0,
+          "end": 67
+        }
+      },
+      {
+        "text": "Monthly rent of Rs 30,000 for a 2BHK apartment.",
+        "cite": {
+          "page": 1,
+          "start": 68,
+          "end": 115
+        }
+      },
+      {
+        "text": "Security deposit of Rs 3,00,000 (ten months rent) held by the landlord.",
+        "cite": {
+          "page": 1,
+          "start": 116,
+          "end": 187
+        }
+      },
+      {
+        "text": "The initial term is eleven months starting 1 October 2026.",
+        "cite": {
+          "page": 1,
+          "start": 188,
+          "end": 246
+        }
+      },
+      {
+        "text": "The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice.",
+        "cite": {
+          "page": 1,
+          "start": 247,
+          "end": 354
+        }
+      },
+      {
+        "text": "The tenant must compensate",
+        "cite": {
+          "page": 1,
+          "start": 355,
+          "end": 477
+        }
+      },
+      {
+        "text": "Hold harmless the landlord against any",
+        "cite": {
+          "page": 1,
+          "start": 355,
+          "end": 477
+        }
+      },
+      {
+        "text": "All claims arising from the use of the premises.",
+        "cite": {
+          "page": 1,
+          "start": 355,
+          "end": 477
+        }
+      },
+      {
+        "text": "The landlord may share the tenant's personal data with third party marketing partners.",
+        "cite": {
+          "page": 1,
+          "start": 478,
+          "end": 564
+        }
+      },
+      {
+        "text": "Any disputes must be resolved by arbitration in Bengaluru.",
+        "cite": {
+          "page": 1,
+          "start": 565,
+          "end": 624
+        }
+      },
+      {
+        "text": "The tenant must deduct TDS at 2% under section 194-IB and deposit it with the government.",
+        "cite": {
+          "page": 1,
+          "start": 625,
+          "end": 715
+        }
+      },
+      {
+        "text": "On expiry the tenant must hand over vacant possession.",
+        "cite": {
+          "page": 1,
+          "start": 716,
+          "end": 771
+        }
+      }
+    ],
+    "before": {
+      "fk": 8.93,
+      "fre": 52.62
+    },
+    "after": {
+      "fk": 8.88,
+      "fre": 52.57
+    },
+    "glossary": [
+      {
+        "term": "rent",
+        "definition": "Money the tenant pays to use the property.",
+        "hi": "किराया"
+      },
+      {
+        "term": "agreement",
+        "definition": "A binding promise between parties.",
+        "hi": "समझौता"
+      },
+      {
+        "term": "deposit",
+        "definition": "Money held as security, returned if no damage.",
+        "hi": "जमा राशि"
+      },
+      {
+        "term": "landlord",
+        "definition": "The property owner who rents it out.",
+        "hi": "मकान मालिक"
+      },
+      {
+        "term": "notice",
+        "definition": "A written warning sent before further action.",
+        "hi": "नोटिस"
+      },
+      {
+        "term": "tenant",
+        "definition": "The person renting and living in the property.",
+        "hi": "किराएदार"
+      },
+      {
+        "term": "arbitration",
+        "definition": "Private dispute resolution outside court.",
+        "hi": "मध्यस्थता"
+      }
+    ],
+    "level": "8",
+    "lang": "en"
+  },
+  "qa": [
+    {
+      "question": "Is the Rs 3,00,000 security deposit legal?",
+      "answer": "No - the Rs 3,00,000 deposit is 10x the Rs 30,000 rent, far above the 2-month MTA Sec 11 cap [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+          "start": 0,
+          "end": 771
+        }
+      ],
+      "abstain": null
+    },
+    {
+      "question": "Can the landlord change the agreement terms unilaterally?",
+      "answer": "The agreement lets the landlord amend terms at any time at its sole discretion without notice [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": "ataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+          "start": 60,
+          "end": 771
+        }
+      ],
+      "abstain": null
+    },
+    {
+      "question": "What is the monthly maintenance charge?",
+      "answer": null,
+      "citations": [],
+      "abstain": {
+        "reason": "document does not contain sufficient information to answer [NO_EVIDENCE]",
+        "code": "NO_EVIDENCE"
+      }
+    }
+  ],
+  "brief": {
+    "markdown": "# NyayaMitra — Lawyer Brief (1 page)\n\n> Information, not legal advice — verify with advocate\n\n## Facts\n- Agreement excerpt reviewed (18 clauses scanned, premise residential) [doc p.1]\n- Plain-language gist: RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). [doc p.1]\n\n## Risks\n- R01 deposit tier T4 — deposit 10mo exceeds 2mo statutory cap [doc p.1]\n- R03 deposit tier T3 — deposit without refund timeline [doc p.1]\n- R09 unilateral_amendment tier T4 — flagged [doc p.1]\n- R11 indemnity tier T4 — flagged [doc p.1]\n- R13 governing_law tier T3 — arbitration clause — review venue/seat [doc p.1]\n- R15 data_protection tier T4 — personal data shared/sold [doc p.1]\n\n## Missing\n- R16 retention missing — verify before signing [doc p.1]\n\n## Deadlines\n- Deposit refund within one month of vacant possession with itemised statement (MTA Sec 11) [doc p.1]\n- Overstay compensation 2x first 60 days then 4x (MTA Sec 23) [doc p.1]\n- TDS 2% on rent > Rs 50,000/mo since 1-Oct-2024; Form 26QC within 30 days + Form 16C, no TAN (Sec 194-IB) [doc p.1]\n\n## Questions for lawyer\n- Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]\n- Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]\n- Forum check: Karnataka Rent Authority (MTA) — ask lawyer if Rent Authority vs civil court fits your pincode [doc p.1]",
+    "redline_docx_path": "redline-demo-priya-lease.docx",
+    "questions_for_lawyer": [
+      "Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]",
+      "Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]",
+      "Forum check: Karnataka Rent Authority (MTA) — ask lawyer if Rent Authority vs civil court fits your pincode [doc p.1]"
+    ],
+    "verification_trail": [
+      {
+        "source": "R01",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R03",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R06",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R09",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R11",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R13",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R15",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R16",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R18",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      }
+    ],
+    "cites": [
+      {
+        "page": 1,
+        "start": 0,
+        "end": 771,
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R01"
+      },
+      {
+        "page": 1,
+        "start": 0,
+        "end": 771,
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R03"
+      },
+      {
+        "page": 1,
+        "start": 0,
+        "end": 771,
+        "excerpt": "RENTAL AGREEMENT - Priya Sharma, HSR Layout, Bengaluru (Karnataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R06"
+      },
+      {
+        "page": 1,
+        "start": 60,
+        "end": 771,
+        "excerpt": "ataka). Monthly rent of Rs 30,000 for a 2BHK apartment. Security deposit of Rs 3,00,000 (ten months rent) held by the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R09"
+      },
+      {
+        "page": 1,
+        "start": 172,
+        "end": 771,
+        "excerpt": "y the landlord. The initial term is eleven months starting 1 October 2026. The landlord may amend the terms of this agreement at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R11"
+      },
+      {
+        "page": 1,
+        "start": 369,
+        "end": 771,
+        "excerpt": "ll indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R13"
+      },
+      {
+        "page": 1,
+        "start": 295,
+        "end": 771,
+        "excerpt": "nt at any time at its sole discretion without prior notice. The tenant shall indemnify and hold harmless the landlord against any and all claims arising from the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R15"
+      },
+      {
+        "page": 1,
+        "start": 449,
+        "end": 771,
+        "excerpt": "rom the use of the premises. The landlord may share the tenant's personal data with third party marketing partners. Any disputes shall be resolved by arbitration in Bengaluru. The tenant shall deduct TDS at 2% under section 194-IB and deposit it with the government. On expiry the tenant shall hand over vacant possession.",
+        "rule_id": "R18"
+      }
+    ],
+    "disclaimer": "Information, not legal advice — verify with advocate"
+  },
+  "meta": {
+    "built_at": "2026-09-21T20:55:49.484798+00:00",
+    "engine": "app.engine.rules R01-R18 + maths M1/M2/M3 + contradict C1-C4",
+    "llm_live": false,
+    "served_from": "cache",
+    "cost_usd": 0.0,
+    "served": "cache-first when LLM_LIVE=0 or Aura paused"
+  }
+}

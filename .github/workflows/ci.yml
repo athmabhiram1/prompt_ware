@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  backend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: pip install ruff pytest
+      - name: ruff check (F1 error-level gate, see pyproject.toml)
+        working-directory: ./backend
+        run: ruff check .
+      - name: ruff format (F1 scope: app tree + tests)
+        working-directory: ./backend
+        run: ruff format --check app/core app/engine app/rag app/routers smoke_test.py tests/
+      - name: pytest (live tests skip-guarded, no keys needed)
+        working-directory: ./backend
+        run: pytest -q
+
+  frontend:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+          cache-dependency-path: frontend/package-lock.json
+      - working-directory: ./frontend
+        run: npm ci
+      - working-directory: ./frontend
+        run: npm run lint
+      - working-directory: ./frontend
+        run: npx tsc -b
+      - working-directory: ./frontend
+        run: npm test
+      - name: a11y gate (stub — full @axe-core/playwright lands in Wave 2)
+        working-directory: ./frontend
+        run: |
+          if [ -f tests/a11y.spec.ts ]; then npx axe tests/a11y.spec.ts; else echo "axe stub: no a11y spec yet (Wave 2)"; fi
+
+  diet:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - name: trufflehog diff scan (re-checks W1.1)
+        uses: trufflesecurity/trufflehog@main
+        with:
+          path: ./
+          base: main
+          head: HEAD
+          extra_args: --only-verified
+      - name: repo diet readout
+        run: |
+          du -sh .
+          git count-objects -vH
+      - name: PNG guard (verifies W1.2 — fail on NEW *.png under public/)
+        run: |
+          base=$(git merge-base origin/main HEAD 2>/dev/null || git rev-list --max-parents=0 HEAD)
+          new_pngs=$(git diff --name-only --diff-filter=A "$base" HEAD -- 'frontend/public/*.png' 'public/*.png' || true)
+          if [ -n "$new_pngs" ]; then echo "NEW PNGs under public/ — use WebP (see W1.2):"; echo "$new_pngs"; exit 1; fi
+          echo "png-guard ok (legacy background-clean.png grandfathered; W1.2 tracks removal)"

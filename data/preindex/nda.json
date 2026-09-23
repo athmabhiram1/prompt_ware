@@ -1,0 +1,317 @@
+{
+  "demo_id": "msme",
+  "bundle": "nda.json",
+  "doc_id": "demo-msme-nda",
+  "title": "Sharma Sweets (MSME) mutual NDA - auto-renewal + termination",
+  "story": "An Indore MSME signs a vendor NDA with auto-renewal for successive 2-year terms, unilateral immediate termination, and third-party data sharing without consent.",
+  "premise": "non-residential",
+  "pincode": "452001",
+  "text": "NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore. The receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+  "docs": [
+    {
+      "doc_id": "demo-msme-nda",
+      "name": "demo-msme-nda.txt",
+      "text": "NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore. The receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery."
+    }
+  ],
+  "audit": {
+    "risks": [
+      {
+        "rule_id": "R08",
+        "clause": "auto_renewal",
+        "excerpt": " receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "start": 60,
+        "end": 526,
+        "status": "hit",
+        "tier": 3,
+        "note": "",
+        "data": {}
+      },
+      {
+        "rule_id": "R10",
+        "clause": "termination",
+        "excerpt": "this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "start": 133,
+        "end": 526,
+        "status": "hit",
+        "tier": 3,
+        "note": "",
+        "data": {}
+      },
+      {
+        "rule_id": "R15",
+        "clause": "data_protection",
+        "excerpt": "NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore. The receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "start": 0,
+        "end": 526,
+        "status": "hit",
+        "tier": 4,
+        "note": "personal data shared/sold",
+        "data": {}
+      }
+    ],
+    "missing": [
+      {
+        "rule_id": "R02",
+        "clause": "deposit",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      },
+      {
+        "rule_id": "R13",
+        "clause": "governing_law",
+        "excerpt": "",
+        "start": 0,
+        "end": 0,
+        "status": "missing",
+        "tier": 5,
+        "note": "clause absent — walkaway",
+        "data": {}
+      }
+    ],
+    "obligations": [
+      {
+        "id": "OBL-1",
+        "statute": "DPDP Act 2023",
+        "duty": "breach notification",
+        "computed": "agreement allows 30 days; DPDP expects breach notice within 72 hours",
+        "deadline": "72 hours to Data Protection Board",
+        "source_rule": "R17"
+      },
+      {
+        "id": "OBL-2",
+        "statute": "DPDP Act 2023",
+        "duty": "retention + deletion on request",
+        "computed": "retained 5 years, deleted thereafter on request",
+        "deadline": "delete on request after 5 years",
+        "source_rule": "R16"
+      }
+    ],
+    "contradictions": [],
+    "rule_count": 18
+  },
+  "simplify": {
+    "sentences": [
+      {
+        "text": "NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore.",
+        "cite": {
+          "page": 1,
+          "start": 0,
+          "end": 56
+        }
+      },
+      {
+        "text": "The receiving party must protect all confidential information shared under this agreement.",
+        "cite": {
+          "page": 1,
+          "start": 57,
+          "end": 148
+        }
+      },
+      {
+        "text": "The receiving party may share confidential data with third party vendors without consent.",
+        "cite": {
+          "page": 1,
+          "start": 149,
+          "end": 238
+        }
+      },
+      {
+        "text": "This agreement must auto-renew for successive 2 year terms unless endd in writing.",
+        "cite": {
+          "page": 1,
+          "start": 239,
+          "end": 328
+        }
+      },
+      {
+        "text": "The company may end with immediate effect without notice.",
+        "cite": {
+          "page": 1,
+          "start": 329,
+          "end": 392
+        }
+      },
+      {
+        "text": "Data must be retained for 5 years and deleted thereafter on request.",
+        "cite": {
+          "page": 1,
+          "start": 393,
+          "end": 462
+        }
+      },
+      {
+        "text": "Breach notifications must be sent within 30 days of discovery.",
+        "cite": {
+          "page": 1,
+          "start": 463,
+          "end": 526
+        }
+      }
+    ],
+    "before": {
+      "fk": 11.02,
+      "fre": 34.91
+    },
+    "after": {
+      "fk": 10.22,
+      "fre": 40.62
+    },
+    "glossary": [
+      {
+        "term": "agreement",
+        "definition": "A binding promise between parties.",
+        "hi": "समझौता"
+      },
+      {
+        "term": "consent",
+        "definition": "Permission given for a specific use.",
+        "hi": "सहमति"
+      },
+      {
+        "term": "notice",
+        "definition": "A written warning sent before further action.",
+        "hi": "नोटिस"
+      }
+    ],
+    "level": "8",
+    "lang": "en"
+  },
+  "qa": [
+    {
+      "question": "Does the NDA auto-renew?",
+      "answer": "Yes - it auto-renews for successive 2 year terms unless terminated in writing [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": " receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+          "start": 60,
+          "end": 526
+        }
+      ],
+      "abstain": null
+    },
+    {
+      "question": "Can the company terminate immediately?",
+      "answer": "Yes - the company may terminate with immediate effect without notice [doc p.1]",
+      "citations": [
+        {
+          "page": 1,
+          "span": "this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+          "start": 133,
+          "end": 526
+        }
+      ],
+      "abstain": null
+    }
+  ],
+  "brief": {
+    "markdown": "# NyayaMitra — Lawyer Brief (1 page)\n\n> Information, not legal advice — verify with advocate\n\n## Facts\n- Agreement excerpt reviewed (18 clauses scanned, premise non-residential) [doc p.1]\n- Plain-language gist: NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore. [doc p.1]\n\n## Risks\n- R08 auto_renewal tier T3 — flagged [doc p.1]\n- R10 termination tier T3 — flagged [doc p.1]\n- R15 data_protection tier T4 — personal data shared/sold [doc p.1]\n\n## Missing\n- R02 deposit missing — verify before signing [doc p.1]\n- R13 governing_law missing — verify before signing [doc p.1]\n\n## Deadlines\n- Deposit refund within one month of vacant possession with itemised statement (MTA Sec 11) [doc p.1]\n- Overstay compensation 2x first 60 days then 4x (MTA Sec 23) [doc p.1]\n- TDS 2% on rent > Rs 50,000/mo since 1-Oct-2024; Form 26QC within 30 days + Form 16C, no TAN (Sec 194-IB) [doc p.1]\n\n## Questions for lawyer\n- Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]\n- Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]\n- Forum check: Rent Authority vs civil court vs consumer forum — ask lawyer which forum fits your pincode [doc p.1]",
+    "redline_docx_path": "redline-demo-msme-nda.docx",
+    "questions_for_lawyer": [
+      "Is the deposit within MTA Sec 11 caps for this premise? [doc p.1]",
+      "Does the refund/overstay/TDS trail (26QC/16C) match the agreement dates? [doc p.1]",
+      "Forum check: Rent Authority vs civil court vs consumer forum — ask lawyer which forum fits your pincode [doc p.1]"
+    ],
+    "verification_trail": [
+      {
+        "source": "R02",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R06",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R08",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R10",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R13",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R15",
+        "section": "Risks",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R16",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      },
+      {
+        "source": "R17",
+        "section": "Missing",
+        "timestamp": "2026-09-21T20:55:49Z"
+      }
+    ],
+    "cites": [
+      {
+        "page": 1,
+        "start": 86,
+        "end": 526,
+        "excerpt": "tect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R06"
+      },
+      {
+        "page": 1,
+        "start": 60,
+        "end": 526,
+        "excerpt": " receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R08"
+      },
+      {
+        "page": 1,
+        "start": 133,
+        "end": 526,
+        "excerpt": "this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R10"
+      },
+      {
+        "page": 1,
+        "start": 0,
+        "end": 526,
+        "excerpt": "NON-DISCLOSURE AGREEMENT - Sharma Sweets (MSME), Indore. The receiving party shall protect all confidential information shared under this agreement. The receiving party may share confidential data with third party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R15"
+      },
+      {
+        "page": 1,
+        "start": 207,
+        "end": 526,
+        "excerpt": " party vendors without consent. This agreement shall auto-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R16"
+      },
+      {
+        "page": 1,
+        "start": 263,
+        "end": 526,
+        "excerpt": "o-renew for successive 2 year terms unless terminated in writing. The company may terminate with immediate effect without notice. Data shall be retained for 5 years and deleted thereafter on request. Breach notifications shall be sent within 30 days of discovery.",
+        "rule_id": "R17"
+      }
+    ],
+    "disclaimer": "Information, not legal advice — verify with advocate"
+  },
+  "meta": {
+    "built_at": "2026-09-21T20:55:49.493004+00:00",
+    "engine": "app.engine.rules R01-R18 + maths M1/M2/M3 + contradict C1-C4",
+    "llm_live": false,
+    "served_from": "cache",
+    "cost_usd": 0.0,
+    "served": "cache-first when LLM_LIVE=0 or Aura paused"
+  }
+}

@@ -1,0 +1,17 @@
+PROMPT: Compare — deterministic semantic delta (no LLM at request time)
+
+System: "Compare two texts via token overlap + rule-scan deltas. Kinds: added|deleted|risk-up. No LLM judge at request time."
+
+Engine (backend/app/routers/compare.py:118 compare_texts):
+- token_cosine(a,b) from Counter bag-of-words
+- scan(a) vs scan(b) via app/engine/rules.py:369 scan — each finding status hit/pass/missing
+- _pair_deltas: if fa.missing and fb.hit → added; fa.hit and fb.missing → deleted; tier increase → risk-up
+- _numeric_line: deposit cap check via maths.check_deposit for R01/R02
+- _modal_deltas: modal verb guard (may/shall)
+
+llm_judge stub (compare.py) returns Literal["clarified"] only; never grades risk.
+
+Routes:
+- POST /compare at compare.py:336
+- POST /compare/redline at compare.py:349 → app/engine/redline.py:47 to_redlines_json
+- POST /compare/export.docx at compare.py:363 → redline.py:69 build_redline_docx

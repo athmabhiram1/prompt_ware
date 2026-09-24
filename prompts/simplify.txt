@@ -1,0 +1,10 @@
+PROMPT: Simplify — deterministic FK/FRE + Hindi brackets (engine: backend/app/routers/simplify_engine.py)
+
+System (not LLM): grading uses flesch_kincaid/flesch_reading_ease, simplify_sentence splits by FK targets 5→≤6, 8→≤8.5, 10→≤10, pro→unchanged.
+
+User prompt (raw):
+"Simplify the following legal excerpt to reading level {level} ({5|8|10|pro}), language {lang} (en|hi). Keep every sentence cited to its source span [page,start,end]. Use plain words for 'indemnity→pay for losses, termination→ending'. For Hindi, wrap as 'हिंदी (English)' brackets. Never invent a clause span."
+
+Deterministic tail (appended at LLM_LIVE=0, no call): extractive spans via split_clauses/simplify_sentence; Hindi via hindi_with_bracket + to_hindi_sentence. Guard: assertAllCited.
+
+Live stub (LLM_LIVE=1 reserved, not wired): gemini-3.1-flash-lite via backend/llm_provider.py:23 get_llm_func → lightrag_engine.py:189.

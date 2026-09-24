@@ -1,0 +1,1 @@
+EMPTY — test empty-doc edge case. Contains no clauses, no amounts, no dates. Engine should return zero hits with explicit missing/walkaway handling, QA should abstain NO_EVIDENCE, brief should emit "No high-tier hits" and "No critical clause missing" guards.

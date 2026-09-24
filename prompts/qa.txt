@@ -1,0 +1,18 @@
+PROMPT: QA CiteGuard — CREAC + cite protocol + strict regen (engine: backend/app/rag/prompts.py)
+
+System prompt (backend/app/rag/prompts.py:15 CREAC_SYSTEM):
+"You answer ONLY from the EVIDENCE chunks below (CREAC grounded Q&A). Every claim must carry {cite:chunk_id}. If evidence is insufficient, answer exactly: NO_EVIDENCE. Never invent a citation."
+
+Refusal template (prompts.py:24 REFUSE_TEMPLATE):
+"The document does not contain sufficient information to answer this question. [{code}]" where code ∈ {NO_EVIDENCE, IRRELEVANT_EVIDENCE, UNSUPPORTED_AFTER_REGEN}
+
+Strict regen note (prompts.py:29 REGEN_STRICT_NOTE):
+"STRICT REGEN: your previous draft cited missing or unsupported spans. Re-answer using ONLY the provided EVIDENCE and valid {cite:*} markers."
+
+Validator (prompts.py:35 protocol_errors, validator.py:16):
+- Cite protocol: {cite:chunk_id} must match a retrieved chunk_id.
+- Sentence validation: token overlap≥0.10 OR sim≥0.40 → Supported. support_ratio must be 1.0 else regen once, then abstain UNSUPPORTED_AFTER_REGEN.
+
+Thresholds (backend/app/routers/qa.py:42-45): RETRIEVAL_MIN 0.10, RELEVANCE_MIN 0.05, SUPPORT_MIN 1.0, MAX_REGENS 1.
+
+Live flag: LLM_LIVE=0 → draft_answer returns stub_answer (extractive first sentence + true cite) at backend/app/rag/llm.py:46. LLM_LIVE=1 hook reserved.

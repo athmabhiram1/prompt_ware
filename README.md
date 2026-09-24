@@ -2,6 +2,8 @@
 
 # NyayaMitra — Legal Document Demystifier
 
+> **Wave B — Evidence Pack (7 bullets, zero orphans):** [Traceability](docs/TRACEABILITY.md) · [GenAI Usage](docs/GENAI-USAGE.md) · Examples: [simplify](examples/simplify/) · [compare](examples/compare/) · [highlight](examples/highlight/) · [qa](examples/qa/) · [options](examples/options/) · [checklists](examples/checklists/) · [brief](examples/brief/) — Samples: `samples/employment-offer.md`, `privacy-short.md`, `v1-lead-friendly.md`↔`v2-landlord-amend.md`, `empty.txt` — All outputs derived by running the local deterministic engine/routers (never hand-invented); LLM-drafted parts marked.
+
 NyayaMitra reads hostile legal documents (rental agreements, NDAs, offer letters, Terms of Service) **for** everyday Indian users who sign papers they have never read — and shows back plain-English answers with a risk level and the exact clause each claim came from.
 
 ```bash

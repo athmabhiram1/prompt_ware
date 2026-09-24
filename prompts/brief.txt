@@ -1,0 +1,16 @@
+PROMPT: Brief — 1-page lawyer brief (composition, not freeform LLM)
+
+System: "Compose a 1-page brief from frozen W2 outputs only: Finding (R01-R18 scan), SimplifySentence, QaCitation. Every markdown bullet must end with [doc p.X]. No invented cites."
+
+Sections (deterministic at backend/app/routers/brief.py:136 build_brief):
+- Facts: "{N} clauses scanned, premise {kind}" + plain gist (simp.sentences[0].text)
+- Risks: each hit → "- {rule_id} {clause} tier T{tier} — {note} [doc p.X]"
+- Missing: each walkaway → "- {rule_id} {clause} missing — verify before signing [doc p.X]"
+- Deadlines: MTA Sec 11 (30-day refund), Sec 23 (2x/4x), 194-IB 2% + 26QC/16C
+- Questions: deposit cap check + trail + forum hint (pincode 56→Karnataka, 11→Delhi)
+- Footer: "Information, not legal advice — verify with advocate" + verification_trail [{source,section,timestamp}] + cites[] + redline_docx_path
+
+Guard (backend/app/routers/brief.py:66 assert_all_cited):
+for bullet in bullets: if not re.search(r"\[doc p\.\d+\]", bullet): raise ValidationError("claim lacks [doc p.X] cite")
+
+Live: deterministic at LLM_LIVE=0; no live LLM call. LLM-drafted only for 2-3 lawyer questions' phrasing (marked) — but still ends with [doc p.X].

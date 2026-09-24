@@ -1,0 +1,15 @@
+PROMPT: Options — fight/settle/exit matrix + checklists
+
+Raw task text: "Return fight/settle/exit options with tradeoffs, cost_hint, time_hint; never use 'sue' verb; always attach disclaimer."
+
+Engine (backend/app/routers/options.py:77 build_options):
+- Inputs: text (ignored for matrix), monthly_rent, premise, pincode
+- Logic: deterministic 3 options:
+  fight  {title:"Dispute deductions via Rent Authority notice", tradeoffs:[MTA Sec 11 refund clock, preserves deposit claim], cost_hint:"Filing fee + lawyer consult (indicative Rs 5–15k)", time_hint:"4–12 weeks via Rent Authority (Rs {rent}/mo, {premise})"}
+  settle {title:"Negotiate itemised deductions + payment timeline", ...}
+  exit   {title:"Vacate, document handover, claim via paper trail", ...}
+- Checklists: move_out_checklist() 6 items incl 30-day clock, painting pro-rata; tds_checklist() 5 items incl 2% since 1-Oct-2024, 26QC within 30d + 16C, no TAN.
+
+Statute anchors: MTA Sec 11 (2mo/6mo cap, 30-day refund), Sec 23 (2x 60d then 4x), 194-IB 2% since 1-Oct-2024 — options.py:3-6.
+
+Route: POST /options at options.py:126; checklist-only path tested via GET /export.ics at export.py:66.

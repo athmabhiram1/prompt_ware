@@ -24,6 +24,17 @@ jobs:
       - name: pytest (live tests skip-guarded, no keys needed)
         working-directory: ./backend
         run: pytest -q
+      - name: pip-audit (supply-chain, --strict)
+        continue-on-error: true
+        run: |
+          pip install pip-audit
+          pip-audit --strict --requirement backend/requirements.txt 2>&1 | tee pip-audit.log
+      - name: upload pip-audit log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: pip-audit-log
+          path: pip-audit.log
 
   frontend:
     runs-on: ubuntu-latest
@@ -46,6 +57,16 @@ jobs:
       - name: a11y gate (vitest-axe smoke, wcag2a/wcag2aa; no browsers in CI)
         working-directory: ./frontend
         run: npx vitest run tests/a11y.spec.ts --reporter=minimal
+      - name: npm audit (supply-chain, high+)
+        working-directory: ./frontend
+        continue-on-error: true
+        run: npm audit --audit-level=high 2>&1 | tee ../npm-audit.log
+      - name: upload npm-audit log
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: npm-audit-log
+          path: npm-audit.log
 
   diet:
     runs-on: ubuntu-latest

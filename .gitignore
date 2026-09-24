@@ -20,3 +20,6 @@ backend/documents/
 *.sqlite
 # Hygiene: agent notepads stay local, never submitted
 .omo/
+# coverage artifacts — never commit
+.coverage
+frontend/coverage/

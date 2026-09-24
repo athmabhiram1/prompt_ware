@@ -43,10 +43,10 @@ Legal documents are deliberately complex. When a Bengaluru tenant pays a ₹3,00
 | 5 | Reading-level simplify + Hindi support | `POST /simplify` (levels 5/8/10/pro, en/hi) | `backend/app/routers/simplify.py`, `frontend/src/lib/simplify.ts`, `frontend/src/components/ReadingSlider.tsx` |
 | 6 | Cited Q&A that abstains instead of hallucinating | `POST /qa` (CiteGuard + regen-once) | `backend/app/routers/qa.py`, `backend/app/rag/validator.py`, `frontend/src/lib/qa.ts` |
 | 7 | Offline demo + 1-page brief for the judges | `GET /demo/*` (frozen bundles) + `POST /brief` | `backend/app/routers/demo.py`, `backend/app/routers/brief.py`, `data/preindex/*.json` |
-| 8 | Version compare + redline + .docx export | `POST /compare`, `/compare/redline`, `/compare/export.docx` | `backend/app/routers/compare.py` |
+| 8 | Version compare + redline/Highlight + .docx export | `POST /compare`, `/compare/redline`, `/compare/export.docx` | `backend/app/routers/compare.py:218,229,241` |
 | 9 | Clause scan with cited clause cards | Clause scan + ClauseCards/ProofBar | `backend/app/engine/rules.py`, `frontend/src/components/` |
-| 10 | Fight/settle/exit options | `POST /options` (fight/settle/exit) | `backend/app/routers/options.py` |
-| 11 | Move-out + TDS checklists + deadline export | Move-out + TDS lists + `GET /export.ics` | `backend/app/routers/options.py`, `backend/app/routers/export.py` |
+| 10 | Fight/settle/exit options | `POST /options` (fight/settle/exit) | `backend/app/routers/options.py:118` |
+| 11 | Move-out + TDS checklists + deadline export | Move-out + TDS lists + `GET /export.ics` | `backend/app/routers/options.py:118`, `backend/app/routers/export.py:60` |
 
 ## Assumptions
 

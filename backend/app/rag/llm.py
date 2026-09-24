@@ -22,9 +22,12 @@ LlmFn = Callable[[str], str]
 REFUSAL_LOG: list[dict] = []
 
 
-def build_prompt(question: str, results: list[ScoredChunk], strict: bool = False) -> str:
+def build_prompt(
+    question: str, results: list[ScoredChunk], strict: bool = False
+) -> str:
     blocks = "\n".join(
-        f"[{item.chunk.chunk_id} p.{item.chunk.page}] {item.chunk.text}" for item in results
+        f"[{item.chunk.chunk_id} p.{item.chunk.page}] {item.chunk.text}"
+        for item in results
     )
     note = f"\n{prompts.REGEN_STRICT_NOTE}" if strict else ""
     return f"{prompts.CREAC_SYSTEM}\nQUESTION: {question}\nEVIDENCE:\n{blocks}{note}"
@@ -43,7 +46,9 @@ def stub_answer(question: str, results: list[ScoredChunk]) -> str:
     return f"{first} {{cite:{top.chunk_id}}}"
 
 
-def draft_answer(question: str, results: list[ScoredChunk], strict: bool = False) -> str:
+def draft_answer(
+    question: str, results: list[ScoredChunk], strict: bool = False
+) -> str:
     """Live hook: stub unless LLM_LIVE=1 (Wave 3 fills the live branch)."""
     _ = strict
     if os.getenv("LLM_LIVE", "0") == "1":

@@ -74,8 +74,12 @@ def tds_checklist() -> list[str]:
     ]
 
 
-def build_options(text: str, monthly_rent: float = 0.0, premise: str = "residential",
-                  pincode: str | None = None) -> OptionsResponse:
+def build_options(
+    text: str,
+    monthly_rent: float = 0.0,
+    premise: str = "residential",
+    pincode: str | None = None,
+) -> OptionsResponse:
     """Deterministic matrix from deposit/TDS posture (no advice verbs)."""
     _ = (text, pincode)
     rent_bit = f"Rs {monthly_rent:,.0f}/mo" if monthly_rent > 0 else "stated rent"
@@ -111,8 +115,12 @@ def build_options(text: str, monthly_rent: float = 0.0, premise: str = "resident
             time_hint="Move-out week + 30-day refund clock",
         ),
     ]
-    return OptionsResponse(options=options, move_out_checklist=move_out_checklist(),
-                           tds_checklist=tds_checklist(), disclaimer=DISCLAIMER)
+    return OptionsResponse(
+        options=options,
+        move_out_checklist=move_out_checklist(),
+        tds_checklist=tds_checklist(),
+        disclaimer=DISCLAIMER,
+    )
 
 
 @router.post("/options", response_model=OptionsResponse)
@@ -122,7 +130,11 @@ def post_options(payload: OptionsRequest) -> OptionsResponse:
         source = (payload.text or payload.job_id or payload.doc_id or "").strip()
         if not source:
             raise ValueError("provide job_id or doc_id or text")
-        return build_options(source, monthly_rent=payload.monthly_rent,
-                             premise=payload.premise, pincode=payload.pincode)
+        return build_options(
+            source,
+            monthly_rent=payload.monthly_rent,
+            premise=payload.premise,
+            pincode=payload.pincode,
+        )
     except ValueError as exc:
         raise HTTPException(status_code=422, detail=str(exc)) from exc

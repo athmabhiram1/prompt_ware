@@ -57,7 +57,9 @@ def _stub_engine(monkeypatch, *, neo4j_reachable=False):
     monkeypatch.setattr(_le, "LightRAG", _FakeRAG)
     monkeypatch.setattr(_le, "get_llm_func", lambda: (_fake_llm, "fake-model"))
     monkeypatch.setattr(_le, "get_embedding_func", lambda: _fake_embed)
-    monkeypatch.setattr(_le, "get_active_rag_storage_dir", lambda: Path("/tmp/fake-rag"))
+    monkeypatch.setattr(
+        _le, "get_active_rag_storage_dir", lambda: Path("/tmp/fake-rag")
+    )
     monkeypatch.setattr(_le, "_neo4j_available", lambda: neo4j_reachable)
     monkeypatch.setattr(_le, "_resolve_neo4j_env", lambda: None)
     return captured
@@ -65,8 +67,14 @@ def _stub_engine(monkeypatch, *, neo4j_reachable=False):
 
 def _clear_storage_env(monkeypatch):
     for key in (
-        "POSTGRES_HOST", "POSTGRES_PORT", "POSTGRES_USER", "POSTGRES_PASSWORD",
-        "POSTGRES_DATABASE", "POSTGRES_SSL_MODE", "DATABASE_URL", "MONGO_URI",
+        "POSTGRES_HOST",
+        "POSTGRES_PORT",
+        "POSTGRES_USER",
+        "POSTGRES_PASSWORD",
+        "POSTGRES_DATABASE",
+        "POSTGRES_SSL_MODE",
+        "DATABASE_URL",
+        "MONGO_URI",
     ):
         monkeypatch.delenv(key, raising=False)
 
@@ -175,7 +183,7 @@ def test_bridge_never_clobbers_existing_postgres_vars(monkeypatch):
 
 
 def test_bridge_documents_pooled_statement_cache_knob():
-    doc = (_le._bridge_database_url_to_postgres_env.__doc__ or "")
+    doc = _le._bridge_database_url_to_postgres_env.__doc__ or ""
     assert "statement_cache_size=0" in doc or "statement-cache" in doc
 
 

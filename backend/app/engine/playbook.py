@@ -15,12 +15,24 @@ from app.engine.rules import Finding
 Verdict = Literal["pass", "caution", "walkaway"]
 
 RULE_TO_CLAUSE: dict[str, str] = {
-    "R01": "deposit", "R02": "deposit", "R03": "deposit",
-    "R04": "overstay", "R05": "price", "R06": "tenure",
-    "R07": "maintenance", "R08": "termination", "R09": "termination",
-    "R10": "termination", "R11": "indemnity", "R12": "liability",
-    "R13": "governing_law", "R14": "termination", "R15": "data_protection",
-    "R16": "retention", "R17": "data_protection", "R18": "price",
+    "R01": "deposit",
+    "R02": "deposit",
+    "R03": "deposit",
+    "R04": "overstay",
+    "R05": "price",
+    "R06": "tenure",
+    "R07": "maintenance",
+    "R08": "termination",
+    "R09": "termination",
+    "R10": "termination",
+    "R11": "indemnity",
+    "R12": "liability",
+    "R13": "governing_law",
+    "R14": "termination",
+    "R15": "data_protection",
+    "R16": "retention",
+    "R17": "data_protection",
+    "R18": "price",
 }
 
 
@@ -41,8 +53,12 @@ PLAYBOOK: dict[str, ClauseSpec] = {
     "audit": ClauseSpec(name="audit", tier=3),
     "ai_use": ClauseSpec(name="ai_use", tier=3),
     "termination": ClauseSpec(name="termination", tier=2),
-    "governing_law": ClauseSpec(name="governing_law", tier=1, required=True, missing_walkaway=True),
-    "retention": ClauseSpec(name="retention", tier=2, required=True, missing_walkaway=True),
+    "governing_law": ClauseSpec(
+        name="governing_law", tier=1, required=True, missing_walkaway=True
+    ),
+    "retention": ClauseSpec(
+        name="retention", tier=2, required=True, missing_walkaway=True
+    ),
     "price": ClauseSpec(name="price", tier=3),
     "deposit": ClauseSpec(name="deposit", tier=1, required=True, missing_walkaway=True),
     "tenure": ClauseSpec(name="tenure", tier=2, required=True, missing_walkaway=True),

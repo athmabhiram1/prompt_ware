@@ -8,7 +8,9 @@ def govlaw_rule(text: str, rule: RuleSpec) -> Finding:
     arb = _search(text, rule.hit)
     gov = _search(text, rule.ok)
     if arb:
-        return _hit(text, arb, rule, rule.tier_hit, "arbitration clause — review venue/seat")
+        return _hit(
+            text, arb, rule, rule.tier_hit, "arbitration clause — review venue/seat"
+        )
     if gov:
         return _present(text, gov, rule, "governing law stated")
     return _absent(rule, walkaway=True)
@@ -22,8 +24,16 @@ def dpa_rule(text: str, rule: RuleSpec) -> Finding:
     m = _search(text, rule.ok)
     if m:
         return _present(text, m, rule, "data protection present")
-    return Finding(rule_id="R15", clause=rule.clause, excerpt="", start=0, end=0,
-                   status="missing", tier=4, note="no data protection — removed-protection watch")
+    return Finding(
+        rule_id="R15",
+        clause=rule.clause,
+        excerpt="",
+        start=0,
+        end=0,
+        status="missing",
+        tier=4,
+        note="no data protection — removed-protection watch",
+    )
 
 
 def breach_rule(text: str, rule: RuleSpec) -> Finding:
@@ -34,5 +44,13 @@ def breach_rule(text: str, rule: RuleSpec) -> Finding:
     m = _search(text, [rule.hit[1]])
     if m:
         return _present(text, m, rule, "breach notification within 72h")
-    return Finding(rule_id="R17", clause=rule.clause, excerpt="", start=0, end=0,
-                   status="pass", tier=2, note="no breach clause — no risk")
+    return Finding(
+        rule_id="R17",
+        clause=rule.clause,
+        excerpt="",
+        start=0,
+        end=0,
+        status="pass",
+        tier=2,
+        note="no breach clause — no risk",
+    )

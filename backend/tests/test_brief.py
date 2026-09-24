@@ -60,13 +60,15 @@ def test_brief_cites_w2_outputs():
     assert len(resp.questions_for_lawyer) in (2, 3)
     # cites reuse W2 spans: excerpt slices source
     for cite in resp.cites:
-        assert LEASE[cite.start:cite.end] == cite.excerpt
+        assert LEASE[cite.start : cite.end] == cite.excerpt
 
 
 def test_options_matrix_and_checklists():
     from app.routers.options import build_options
 
-    resp = build_options(text=LEASE, monthly_rent=60000.0, premise="residential", pincode="560001")
+    resp = build_options(
+        text=LEASE, monthly_rent=60000.0, premise="residential", pincode="560001"
+    )
     kinds = {o.kind for o in resp.options}
     assert kinds == {"fight", "settle", "exit"}
     for opt in resp.options:
@@ -87,7 +89,9 @@ def test_options_matrix_and_checklists():
 def test_ics_has_vevent_valarm_dtstart():
     from app.routers.export import build_ics
 
-    ics = build_ics(job_id="t-lease", title="TDS filing reminder", dtstart="20260430T100000")
+    ics = build_ics(
+        job_id="t-lease", title="TDS filing reminder", dtstart="20260430T100000"
+    )
     assert "BEGIN:VEVENT" in ics
     assert "END:VEVENT" in ics
     assert "BEGIN:VALARM" in ics
@@ -120,7 +124,9 @@ def test_endpoints_brief_options_ics():
     assert o.status_code == 200, o.text
     assert len(o.json()["options"]) == 3
 
-    ics = client.get("/export.ics", params={"job_id": "t-lease", "title": "TDS reminder"})
+    ics = client.get(
+        "/export.ics", params={"job_id": "t-lease", "title": "TDS reminder"}
+    )
     assert ics.status_code == 200, ics.text
     assert "BEGIN:VEVENT" in ics.text
     assert "BEGIN:VALARM" in ics.text

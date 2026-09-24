@@ -71,7 +71,9 @@ class ReadyResponse(BaseModel):
     preindex: PreindexStatus
 
 
-def _tcp_reachable(host: str, port: int, timeout_s: float = _DIAL_TIMEOUT_S) -> tuple[bool, float, str]:
+def _tcp_reachable(
+    host: str, port: int, timeout_s: float = _DIAL_TIMEOUT_S
+) -> tuple[bool, float, str]:
     """Dial host:port; return (reachable, latency_ms, detail) without secrets."""
     start: float = time.perf_counter()
     try:
@@ -92,13 +94,21 @@ def _check_url_target(raw_url: str, default_port: int) -> DbTargetStatus:
         host: str = parsed.hostname or ""
         port: int = parsed.port or default_port
         if not host:
-            return DbTargetStatus(configured=True, reachable=False, detail="unparseable host")
+            return DbTargetStatus(
+                configured=True, reachable=False, detail="unparseable host"
+            )
         ok, latency_ms, detail = _tcp_reachable(host, port)
         return DbTargetStatus(
-            configured=True, reachable=ok, host=host, latency_ms=latency_ms, detail=detail
+            configured=True,
+            reachable=ok,
+            host=host,
+            latency_ms=latency_ms,
+            detail=detail,
         )
     except (ValueError, OSError) as exc:
-        return DbTargetStatus(configured=True, reachable=False, detail=f"{type(exc).__name__}")
+        return DbTargetStatus(
+            configured=True, reachable=False, detail=f"{type(exc).__name__}"
+        )
 
 
 def _check_neo4j() -> DbTargetStatus:
@@ -106,7 +116,9 @@ def _check_neo4j() -> DbTargetStatus:
     try:
         from neo4j_connection import _candidate_targets
     except ImportError as exc:
-        return DbTargetStatus(configured=False, detail=f"driver unavailable: {type(exc).__name__}")
+        return DbTargetStatus(
+            configured=False, detail=f"driver unavailable: {type(exc).__name__}"
+        )
     try:
         targets = _candidate_targets()
     except (AttributeError, RuntimeError, ValueError) as exc:
@@ -142,7 +154,9 @@ def _scan_preindex() -> PreindexStatus:
     for directory in _PREINDEX_CANDIDATES:
         try:
             if directory.is_dir():
-                names.extend(sorted(p.name for p in directory.glob("*.json") if p.is_file()))
+                names.extend(
+                    sorted(p.name for p in directory.glob("*.json") if p.is_file())
+                )
         except OSError:
             continue
     unique: list[str] = sorted(set(names))
@@ -170,7 +184,9 @@ async def health_db() -> DbHealthResponse:
     postgres: DbTargetStatus = _check_url_target(settings.database_url, 5432)
     redis: DbTargetStatus = _check_url_target(settings.redis_url, 6379)
     reachable_flags: list[bool] = [
-        check.reachable is True for check in (neo4j, postgres, redis) if check.configured
+        check.reachable is True
+        for check in (neo4j, postgres, redis)
+        if check.configured
     ]
     status: str = "ok"
     if reachable_flags and not all(reachable_flags):

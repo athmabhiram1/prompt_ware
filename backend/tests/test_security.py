@@ -65,7 +65,7 @@ def test_brief_text_overlong_rejected() -> None:
 
 def test_main_query_request_has_max_length() -> None:
     src = (BACKEND / "main.py").read_text(encoding="utf-8")
-    block = src[src.index("class QueryRequest"):src.index("class SourceClause")]
+    block = src[src.index("class QueryRequest") : src.index("class SourceClause")]
     assert "max_length" in block, "QueryRequest.question needs Field(max_length=2000)"
 
 

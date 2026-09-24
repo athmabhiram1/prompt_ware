@@ -32,7 +32,12 @@ from app.rag import llm as llm_mod
 from app.rag import prompts, validator
 from app.rag.chunk import Chunk, chunk_pages
 from app.rag.llm import LlmFn
-from app.rag.vec_mem import ScoredChunk, get_doc_pages, hybrid_search, retrieval_confidence
+from app.rag.vec_mem import (
+    ScoredChunk,
+    get_doc_pages,
+    hybrid_search,
+    retrieval_confidence,
+)
 
 RETRIEVAL_MIN = 0.10
 RELEVANCE_MIN = 0.05
@@ -171,7 +176,12 @@ def answer_question(
                 used.add(cid)
                 chunk = by_id[cid].chunk
                 seen.append(
-                    QaCitation(page=chunk.page, span=chunk.text, start=chunk.start, end=chunk.end)
+                    QaCitation(
+                        page=chunk.page,
+                        span=chunk.text,
+                        start=chunk.start,
+                        end=chunk.end,
+                    )
                 )
             return QaResponse(
                 answer=" ".join(claim.text for claim in claims),

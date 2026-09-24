@@ -45,8 +45,7 @@ jobs:
         run: npm test
       - name: a11y gate (stub — full @axe-core/playwright lands in Wave 2)
         working-directory: ./frontend
-        run: |
-          if [ -f tests/a11y.spec.ts ]; then npx axe tests/a11y.spec.ts; else echo "axe stub: no a11y spec yet (Wave 2)"; fi
+        run: npx vitest run tests/a11y.spec.ts --reporter=minimal
 
   diet:
     runs-on: ubuntu-latest
@@ -55,12 +54,10 @@ jobs:
       - uses: actions/checkout@v4
         with:
           fetch-depth: 0
-      - name: trufflehog diff scan (re-checks W1.1)
+      - name: trufflehog filesystem scan (re-checks W1.1; base-independent so push-to-main passes)
         uses: trufflesecurity/trufflehog@main
         with:
           path: ./
-          base: main
-          head: HEAD
           extra_args: --only-verified
       - name: repo diet readout
         run: |

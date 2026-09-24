@@ -57,15 +57,22 @@ class TdsResult(BaseModel):
 def _premise_cap(premise: str) -> int:
     from app.engine.rules import premise_kind
 
-    return M1_RES_MONTHS if premise_kind(premise) != "non-residential" else M1_NONRES_MONTHS
+    return (
+        M1_RES_MONTHS
+        if premise_kind(premise) != "non-residential"
+        else M1_NONRES_MONTHS
+    )
 
 
-def check_deposit(deposit: float, monthly_rent: float, premise: str = "residential") -> DepositResult:
+def check_deposit(
+    deposit: float, monthly_rent: float, premise: str = "residential"
+) -> DepositResult:
     cap_months = _premise_cap(premise)
     cap_amount = cap_months * monthly_rent
     excess = max(0.0, deposit - cap_amount)
-    return DepositResult(cap_months=cap_months, cap_amount=cap_amount,
-                         excess=excess, breach=excess > 0)
+    return DepositResult(
+        cap_months=cap_months, cap_amount=cap_amount, excess=excess, breach=excess > 0
+    )
 
 
 def overstay_charge(monthly_rent: float, days: int) -> OverstayResult:
@@ -74,8 +81,13 @@ def overstay_charge(monthly_rent: float, days: int) -> OverstayResult:
     after_n = max(0, days - M2_FIRST_DAYS)
     first = first_n * daily * M2_FIRST_MULT
     after = after_n * daily * M2_AFTER_MULT
-    return OverstayResult(days=days, daily_rent=daily, first_slab=first,
-                          after_slab=after, total=first + after)
+    return OverstayResult(
+        days=days,
+        daily_rent=daily,
+        first_slab=first,
+        after_slab=after,
+        total=first + after,
+    )
 
 
 def tds_194ib(monthly_rent: float, months: int = 12) -> TdsResult:

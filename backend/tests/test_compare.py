@@ -106,7 +106,9 @@ def test_f2_compliant_commercial_no_risk_up() -> None:
     resp = _resp(F2)
     assert all(d["label"] != "risk-up" for d in resp["deltas"])
     assert resp["coverage"]["v2"] >= resp["coverage"]["v1"]
-    _assert_excerpts(F2["v1"], [c for d in resp["deltas"] for c in d["cites"] if c["side"] == "v1"])
+    _assert_excerpts(
+        F2["v1"], [c for d in resp["deltas"] for c in d["cites"] if c["side"] == "v1"]
+    )
 
 
 def test_f3_overstay_m2_pro_rata() -> None:
@@ -129,7 +131,10 @@ def test_f5_missing_retention_walkaway() -> None:
     resp = _resp(F5)
     assert "retention" in resp["removed_protections"]
     assert resp["verdict"] == "walkaway"
-    _assert_excerpts(F1["v1"], [c for d in _resp(F1)["deltas"] for c in d["cites"] if c["side"] == "v1"])
+    _assert_excerpts(
+        F1["v1"],
+        [c for d in _resp(F1)["deltas"] for c in d["cites"] if c["side"] == "v1"],
+    )
 
 
 def test_f6_autorenew_arbitration_traps() -> None:
@@ -139,4 +144,6 @@ def test_f6_autorenew_arbitration_traps() -> None:
     assert any(d["label"] == "risk-up" for d in _by_rule(resp, "R12"))
     assert any("shall" in d["one_liner"] for d in resp["deltas"])
     assert "data_protection" in resp["removed_protections"]
-    _assert_excerpts(F6["v2"], [c for d in resp["deltas"] for c in d["cites"] if c["side"] == "v2"])
+    _assert_excerpts(
+        F6["v2"], [c for d in resp["deltas"] for c in d["cites"] if c["side"] == "v2"]
+    )

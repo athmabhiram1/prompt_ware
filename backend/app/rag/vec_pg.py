@@ -61,7 +61,9 @@ class PgVectorStore:
         self.dsn = dsn
         self._mem = vec_mem  # fallback until Wave 3 wires asyncpg queries
 
-    def search(self, query: str, chunks: list[Chunk], mode: str = "hybrid") -> list[ScoredChunk]:
+    def search(
+        self, query: str, chunks: list[Chunk], mode: str = "hybrid"
+    ) -> list[ScoredChunk]:
         # Wave 3: SELECT ... ORDER BY embedding <=> $1 LIMIT 8. For now the
         # pg-first contract holds at the API level; scoring reuses vec_mem.
         return self._mem.hybrid_search(query, chunks, mode=mode)

@@ -48,8 +48,16 @@ def client():
 def test_demo_module_has_zero_live_imports():
     """demo.py must never import live LLM/graph SDKs (cache-only)."""
     source = Path(demo.__file__).read_text(encoding="utf-8")
-    for forbidden in ("llm_provider", "lightrag", "groq", "gemini",
-                      "httpx", "neo4j", "requests", "openai"):
+    for forbidden in (
+        "llm_provider",
+        "lightrag",
+        "groq",
+        "gemini",
+        "httpx",
+        "neo4j",
+        "requests",
+        "openai",
+    ):
         assert forbidden not in source.lower(), f"live import leaked: {forbidden}"
     assert "served_from" in source or "cache" in source.lower()
 
@@ -72,12 +80,15 @@ def test_demo_priya_offline_full_audit(blocked_network, client):
     # every risk excerpt is a real span of the source text
     text = body["text"]
     for risk in audit["risks"]:
-        assert text[risk["start"]:risk["end"]] == risk["excerpt"]
+        assert text[risk["start"] : risk["end"]] == risk["excerpt"]
         assert risk["rule_id"].startswith("R")
 
     # every brief bullet claim carries a [doc p.X] cite — zero invented cites
-    bullets = [ln for ln in body["brief"]["markdown"].splitlines()
-               if ln.strip().startswith("-")]
+    bullets = [
+        ln
+        for ln in body["brief"]["markdown"].splitlines()
+        if ln.strip().startswith("-")
+    ]
     assert len(bullets) >= 5
     for bullet in bullets:
         assert CITE_RE.search(bullet), bullet

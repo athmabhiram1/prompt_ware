@@ -86,7 +86,9 @@ class Settings:
     def validate(self) -> Settings:
         """Enforce deploy guards; raise RuntimeError on misconfiguration."""
         if self.app_env not in APP_ENVS:
-            raise RuntimeError(f"APP_ENV must be one of {list(APP_ENVS)}; got {self.app_env!r}.")
+            raise RuntimeError(
+                f"APP_ENV must be one of {list(APP_ENVS)}; got {self.app_env!r}."
+            )
         if self.llm_provider not in LLM_PROVIDERS:
             raise RuntimeError(
                 f"LLM_PROVIDER must be one of {list(LLM_PROVIDERS)}; got {self.llm_provider!r}."
@@ -108,7 +110,8 @@ def load_settings() -> Settings:
     return Settings(
         app_env=_get_str("APP_ENV", "dev").lower() or "dev",
         api_url=_get_str("API_URL", ""),
-        frontend_url=_get_str("FRONTEND_URL", "http://localhost:5173") or "http://localhost:5173",
+        frontend_url=_get_str("FRONTEND_URL", "http://localhost:5173")
+        or "http://localhost:5173",
         database_url=_get_str("DATABASE_URL", ""),
         redis_url=_get_str("REDIS_URL", ""),
         llm_provider=_get_str("LLM_PROVIDER", "stub").lower() or "stub",
@@ -140,7 +143,9 @@ def ollama_base_url_or_raise(action: str = "ollama") -> str:
     root ``.env.example``. Keeps loopback defaults out of the prod path.
     """
     if _get_str("APP_ENV", "dev").lower() == "prod":
-        raise RuntimeError(f"Ollama is dev-only and disabled when APP_ENV=prod (during {action}).")
+        raise RuntimeError(
+            f"Ollama is dev-only and disabled when APP_ENV=prod (during {action})."
+        )
     base: str = _get_str("OLLAMA_BASE_URL", "")
     if not base:
         raise RuntimeError(
@@ -150,7 +155,9 @@ def ollama_base_url_or_raise(action: str = "ollama") -> str:
     return base
 
 
-def cron_authorized(authorization: str | None, settings: Settings | None = None) -> bool:
+def cron_authorized(
+    authorization: str | None, settings: Settings | None = None
+) -> bool:
     """Fail-closed bearer check stub for the Render cron keepalive (W1.4).
 
     Returns ``True`` only when ``CRON_SECRET`` is configured and the header

@@ -67,7 +67,9 @@ def _idf_weights(docs: list[list[str]]) -> dict[str, float]:
     return {tok: math.log((n + 1) / (freq + 1)) + 1.0 for tok, freq in df.items()}
 
 
-def lexical_score(query_toks: list[str], doc_toks: list[str], idf: dict[str, float]) -> float:
+def lexical_score(
+    query_toks: list[str], doc_toks: list[str], idf: dict[str, float]
+) -> float:
     """IDF-weighted query-term recall in [0, 1] (BM25-style, length-free)."""
     need = set(query_toks)
     if not need:

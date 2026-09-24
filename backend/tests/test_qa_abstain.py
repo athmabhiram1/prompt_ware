@@ -85,7 +85,12 @@ def test_malformed_cite_triggers_regen_path():
 
 
 def test_hybrid_weights_and_topk_truncation():
-    texts = [f"rent clause number {i} payment due" if i == 0 else f"unrelated filler text alpha {i}" for i in range(10)]
+    texts = [
+        f"rent clause number {i} payment due"
+        if i == 0
+        else f"unrelated filler text alpha {i}"
+        for i in range(10)
+    ]
     chunks = [
         C.Chunk(doc_id="d", chunk_id=f"k{i}", page=1, start=0, end=len(t), text=t)
         for i, t in enumerate(texts)
@@ -103,7 +108,9 @@ def test_hybrid_weights_and_topk_truncation():
 
 
 def test_chunker_is_page_span_constrained():
-    page = " ".join(f"Sentence number {i} carries several plain words here." for i in range(300))
+    page = " ".join(
+        f"Sentence number {i} carries several plain words here." for i in range(300)
+    )
     assert C.estimate_tokens(page) > C.CHUNK_TOKENS
     chunks = C.chunk_pages("doc9", [page, T_B])
     assert C.CHUNK_TOKENS == 600 and C.CHUNK_OVERLAP_TOKENS == 120
@@ -134,7 +141,9 @@ def test_qa_endpoint_grounded_and_abstain(monkeypatch):
     assert body["citations"], body
 
     monkeypatch.setattr(qa, "hybrid_search", lambda *a, **k: [])
-    refused = client.post("/qa", json={"doc_id": "t-lease", "question": "Capital of Mars?"})
+    refused = client.post(
+        "/qa", json={"doc_id": "t-lease", "question": "Capital of Mars?"}
+    )
     assert refused.status_code == 200
     assert refused.json()["abstain"]["code"] == "NO_EVIDENCE"
 

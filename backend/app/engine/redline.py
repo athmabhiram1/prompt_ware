@@ -58,7 +58,11 @@ def to_redlines_json(deltas: list[dict]) -> RedlinesJson:
         v1 = next((c.excerpt for c in cites if c.side == "v1"), "")
         v2 = next((c.excerpt for c in cites if c.side == "v2"), "")
         clause = cites[0].rule_id if cites else "general"
-        items.append(RedlineItem(clause=clause, action=action, v1_text=v1, v2_text=v2, cites=cites))
+        items.append(
+            RedlineItem(
+                clause=clause, action=action, v1_text=v1, v2_text=v2, cites=cites
+            )
+        )
     return RedlinesJson(items=items)
 
 

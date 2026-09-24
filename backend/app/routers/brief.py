@@ -69,7 +69,14 @@ def assert_all_cited(claims: list[str]) -> None:
         if not _CITE_RE.search(claim):
             raise ValidationError.from_exception_data(
                 "BriefClaim",
-                [{"type": "missing", "loc": (idx,), "msg": "claim lacks [doc p.X] cite", "input": claim}],
+                [
+                    {
+                        "type": "missing",
+                        "loc": (idx,),
+                        "msg": "claim lacks [doc p.X] cite",
+                        "input": claim,
+                    }
+                ],
             )
 
 
@@ -107,8 +114,15 @@ def _cites_for(text: str, premise: str) -> list[BriefCite]:
         start = text.find(finding.excerpt)
         if start < 0:
             continue
-        out.append(BriefCite(page=1, start=start, end=start + len(finding.excerpt),
-                             excerpt=finding.excerpt, rule_id=finding.rule_id))
+        out.append(
+            BriefCite(
+                page=1,
+                start=start,
+                end=start + len(finding.excerpt),
+                excerpt=finding.excerpt,
+                rule_id=finding.rule_id,
+            )
+        )
     if not out:
         head = text[:200]
         out.append(BriefCite(page=1, start=0, end=len(head), excerpt=head))
@@ -119,8 +133,12 @@ def _bullet(text: str, page: int = 1) -> str:
     return f"- {text} [doc p.{page}]"
 
 
-def build_brief(text: str, premise: str = "residential", pincode: str | None = None,
-                job_id: str | None = None) -> BriefResponse:
+def build_brief(
+    text: str,
+    premise: str = "residential",
+    pincode: str | None = None,
+    job_id: str | None = None,
+) -> BriefResponse:
     """Deterministic brief from W2 outputs only (no live LLM)."""
     cleaned = text.strip()
     if not cleaned:
@@ -136,21 +154,29 @@ def build_brief(text: str, premise: str = "residential", pincode: str | None = N
     tag = f"[doc p.{cites[0].page}]"
 
     facts = [
-        _bullet(f"Agreement excerpt reviewed ({len(findings)} clauses scanned, premise {kind})"),
+        _bullet(
+            f"Agreement excerpt reviewed ({len(findings)} clauses scanned, premise {kind})"
+        ),
         _bullet(f"Plain-language gist: {plain}"),
     ]
     risks = [
         _bullet(f"{f.rule_id} {f.clause} tier T{f.tier} — {f.note or 'flagged'}")
-        for f in findings if f.status == "hit" and f.excerpt
+        for f in findings
+        if f.status == "hit" and f.excerpt
     ] or [_bullet("No high-tier hits; highest tier below T4")]
     missing = [
         _bullet(f"{f.rule_id} {f.clause} missing — verify before signing")
-        for f in findings if f.status == "missing"
+        for f in findings
+        if f.status == "missing"
     ] or [_bullet("No critical clause missing")]
     deadlines = [
-        _bullet("Deposit refund within one month of vacant possession with itemised statement (MTA Sec 11)"),
+        _bullet(
+            "Deposit refund within one month of vacant possession with itemised statement (MTA Sec 11)"
+        ),
         _bullet("Overstay compensation 2x first 60 days then 4x (MTA Sec 23)"),
-        _bullet("TDS 2% on rent > Rs 50,000/mo since 1-Oct-2024; Form 26QC within 30 days + Form 16C, no TAN (Sec 194-IB)"),
+        _bullet(
+            "TDS 2% on rent > Rs 50,000/mo since 1-Oct-2024; Form 26QC within 30 days + Form 16C, no TAN (Sec 194-IB)"
+        ),
     ]
     forum = _forum_hint(pincode)
     questions = [
@@ -185,9 +211,13 @@ def build_brief(text: str, premise: str = "residential", pincode: str | None = N
 
     stamp = _now_iso()
     trail = [
-        VerificationRow(source=f.rule_id or "simplify", section="Risks" if f.status == "hit" else "Missing",
-                        timestamp=stamp)
-        for f in findings if f.excerpt or f.status == "missing"
+        VerificationRow(
+            source=f.rule_id or "simplify",
+            section="Risks" if f.status == "hit" else "Missing",
+            timestamp=stamp,
+        )
+        for f in findings
+        if f.excerpt or f.status == "missing"
     ] or [VerificationRow(source="simplify", section="Facts", timestamp=stamp)]
     doc_key = (job_id or "brief").strip() or "brief"
     return BriefResponse(
@@ -206,8 +236,12 @@ def post_brief(request: Request, payload: BriefRequest) -> BriefResponse:
     """Compose a cited 1-page brief from frozen W2 outputs."""
     try:
         source = _resolve_text(payload)
-        return build_brief(source, premise=payload.premise, pincode=payload.pincode,
-                           job_id=payload.job_id or payload.doc_id)
+        return build_brief(
+            source,
+            premise=payload.premise,
+            pincode=payload.pincode,
+            job_id=payload.job_id or payload.doc_id,
+        )
     except ValidationError:
         raise
     except HTTPException:

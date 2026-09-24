@@ -27,11 +27,17 @@ def _clean(value: str) -> str:
     return " ".join(value.split()).replace(",", ";")[:200] or _DEFAULT_TITLE
 
 
-def build_ics(job_id: str = "brief", title: str = _DEFAULT_TITLE,
-              dtstart: str = _DEFAULT_DTSTART, dtend: str = "") -> str:
+def build_ics(
+    job_id: str = "brief",
+    title: str = _DEFAULT_TITLE,
+    dtstart: str = _DEFAULT_DTSTART,
+    dtend: str = "",
+) -> str:
     """Build a minimal RFC5545 calendar with one VEVENT + VALARM."""
     start = (dtstart or _DEFAULT_DTSTART).strip()
-    end = (dtend or "").strip() or (start[:8] + "T110000" if len(start) >= 8 else _DEFAULT_DTSTART)
+    end = (dtend or "").strip() or (
+        start[:8] + "T110000" if len(start) >= 8 else _DEFAULT_DTSTART
+    )
     uid = f"{(job_id or 'brief').strip() or 'brief'}@nyayamitra"
     lines = [
         "BEGIN:VCALENDAR",
@@ -58,8 +64,12 @@ def build_ics(job_id: str = "brief", title: str = _DEFAULT_TITLE,
 
 
 @router.get("/export.ics")
-def get_ics(job_id: str = "brief", title: str = _DEFAULT_TITLE,
-            dtstart: str = _DEFAULT_DTSTART, dtend: str = "") -> Response:
+def get_ics(
+    job_id: str = "brief",
+    title: str = _DEFAULT_TITLE,
+    dtstart: str = _DEFAULT_DTSTART,
+    dtend: str = "",
+) -> Response:
     """Serve the deadline calendar (imports to Google Calendar)."""
     try:
         body = build_ics(job_id=job_id, title=title, dtstart=dtstart, dtend=dtend)
@@ -67,5 +77,8 @@ def get_ics(job_id: str = "brief", title: str = _DEFAULT_TITLE,
         from fastapi import HTTPException
 
         raise HTTPException(status_code=422, detail=str(exc)) from exc
-    return Response(content=body, media_type="text/calendar",
-                    headers={"Content-Disposition": "attachment; filename=nyayamitra.ics"})
+    return Response(
+        content=body,
+        media_type="text/calendar",
+        headers={"Content-Disposition": "attachment; filename=nyayamitra.ics"},
+    )

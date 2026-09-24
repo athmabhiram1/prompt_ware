@@ -24,7 +24,9 @@ def check_content_length_header(raw: str | None) -> None:
         )
 
 
-def validate_upload(filename: str | None, content_type: str | None, content: bytes) -> None:
+def validate_upload(
+    filename: str | None, content_type: str | None, content: bytes
+) -> None:
     """Validate an already-read upload body.
 
     Raises 400 for wrong content-type / missing filename / empty body,
@@ -34,7 +36,9 @@ def validate_upload(filename: str | None, content_type: str | None, content: byt
     if (content_type or "") not in ALLOWED_CONTENT_TYPES:
         raise HTTPException(status_code=400, detail="Only PDF uploads are supported")
     if not filename:
-        raise HTTPException(status_code=400, detail="Uploaded file must include a filename")
+        raise HTTPException(
+            status_code=400, detail="Uploaded file must include a filename"
+        )
     if len(content) > MAX_PDF_BYTES:
         raise HTTPException(
             status_code=413,

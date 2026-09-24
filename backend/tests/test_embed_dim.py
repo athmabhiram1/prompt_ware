@@ -45,6 +45,8 @@ def test_genai_md_records_3072_one_truth():
 
 
 def test_vec_pg_ddl_records_3072_one_truth():
-    text = (Path(__file__).resolve().parent.parent / "app" / "rag" / "vec_pg.py").read_text()
+    text = (
+        Path(__file__).resolve().parent.parent / "app" / "rag" / "vec_pg.py"
+    ).read_text()
     assert f"vector({CHOSEN_DIM})" in text
     assert "vector(768)" not in text

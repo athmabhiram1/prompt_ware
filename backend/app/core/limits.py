@@ -14,7 +14,6 @@ try:
     limiter = Limiter(key_func=get_remote_address)
     _HAVE_SLOWAPI = True
 except Exception:  # pragma: no cover - boot must never break
-
     _HAVE_SLOWAPI = False
 
     class _NoOpLimiter:  # type: ignore[no-redef]

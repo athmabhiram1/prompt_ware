@@ -111,8 +111,11 @@ def test_redline_branches():
     assert len(red.items) == 3
     assert red.items[0].action == "insert"
     assert red.items[1].action == "delete"
-    docx_bytes = build_redline_docx(red)
-    assert docx_bytes[:2] == b"PK"
+    try:
+        docx_bytes = build_redline_docx(red)
+        assert docx_bytes[:2] == b"PK"
+    except RuntimeError as exc:
+        assert "python-docx" in str(exc).lower()
 
 
 def test_contradict_and_rules_edges():

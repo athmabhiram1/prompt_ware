@@ -13,11 +13,12 @@ Route map: ``priya -> msa.json`` (Bengaluru lease), ``msme -> nda.json``,
 
 from __future__ import annotations
 
+import hashlib
 import json
 from functools import lru_cache
 from pathlib import Path
 
-from fastapi import APIRouter, HTTPException
+from fastapi import APIRouter, HTTPException, Request, Response
 from pydantic import BaseModel, ConfigDict, Field
 
 router = APIRouter(prefix="/demo", tags=["demo"])
@@ -224,6 +225,20 @@ class DemoResponse(BaseModel):
     meta: DemoMeta = Field(default_factory=DemoMeta)
 
 
+_CACHE_CONTROL = "public, max-age=3600"
+_SEEN_DEMO_IDS: set[str] = set()
+_SEEN_LIST = False
+
+_ETAG_CACHE: dict[str, str] = {}
+
+
+def _etag_for_payload(payload: dict[str, JsonValue]) -> str:
+    """Stable strong ETag from canonical JSON (sha256, quoted)."""
+    raw = json.dumps(payload, sort_keys=True, ensure_ascii=False).encode("utf-8")
+    digest = hashlib.sha256(raw).hexdigest()[:16]
+    return f'"{digest}"'
+
+
 @lru_cache(maxsize=4)
 def load_bundle(demo_id: str) -> dict[str, JsonValue]:
     """Read a frozen bundle from disk (cached in-process; no I/O per hit)."""
@@ -253,16 +268,45 @@ def load_bundle(demo_id: str) -> dict[str, JsonValue]:
 
 
 @router.get("/{demo_id}", response_model=DemoResponse)
-def get_demo(demo_id: str) -> DemoResponse:
+def get_demo(demo_id: str, request: Request, response: Response):
     """Serve a frozen demo audit (cache-only; ignores LLM_LIVE by design)."""
+    normalized = demo_id.strip().lower()
+    is_hit = normalized in _SEEN_DEMO_IDS
     payload = dict(load_bundle(demo_id))
-    # Cache always wins: LLM_LIVE is ignored by design (never dials out),
-    # so report llm_live False — this endpoint never makes a live call.
     payload["meta"] = {"served_from": "cache", "llm_live": False}
+    if normalized not in _ETAG_CACHE:
+        _ETAG_CACHE[normalized] = _etag_for_payload(payload)
+    etag = _ETAG_CACHE[normalized]
+    cache_status = "HIT" if is_hit else "MISS"
+    _SEEN_DEMO_IDS.add(normalized)
+    inm = request.headers.get("if-none-match")
+    if inm and inm.strip() == etag:
+        return Response(
+            status_code=304,
+            headers={"ETag": etag, "Cache-Control": _CACHE_CONTROL, "X-Cache": "HIT"},
+        )
+    response.headers["ETag"] = etag
+    response.headers["Cache-Control"] = _CACHE_CONTROL
+    response.headers["X-Cache"] = cache_status
     return DemoResponse(**payload)
 
 
 @router.get("", response_model=list[str])
-def list_demos() -> list[str]:
+def list_demos(request: Request, response: Response) -> list[str]:
     """List available frozen demo ids."""
-    return sorted(DEMO_TO_BUNDLE)
+    global _SEEN_LIST
+    ids = sorted(DEMO_TO_BUNDLE)
+    raw = json.dumps(ids, sort_keys=True).encode("utf-8")
+    etag = f'"{hashlib.sha256(raw).hexdigest()[:16]}"'
+    inm = request.headers.get("if-none-match")
+    if inm and inm.strip() == etag:
+        return Response(  # type: ignore[return-value]
+            status_code=304,
+            headers={"ETag": etag, "Cache-Control": _CACHE_CONTROL, "X-Cache": "HIT"},
+        )
+    cache_status = "HIT" if _SEEN_LIST else "MISS"
+    _SEEN_LIST = True
+    response.headers["ETag"] = etag
+    response.headers["Cache-Control"] = _CACHE_CONTROL
+    response.headers["X-Cache"] = cache_status
+    return ids

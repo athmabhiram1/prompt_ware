@@ -14,16 +14,16 @@ jobs:
       - uses: actions/setup-python@v5
         with:
           python-version: "3.12"
-      - run: pip install -r backend/requirements.txt ruff pytest
+      - run: pip install -r backend/requirements.txt ruff pytest pytest-cov
       - name: ruff check (F1 error-level gate, see pyproject.toml)
         working-directory: ./backend
         run: ruff check .
       - name: "ruff format (F1 scope: app tree + tests)"
         working-directory: ./backend
         run: ruff format --check app/core app/engine app/rag app/routers smoke_test.py tests/
-      - name: pytest (live tests skip-guarded, no keys needed)
+      - name: pytest with coverage gate (80% branch, fail_under in pyproject.toml)
         working-directory: ./backend
-        run: pytest -q
+        run: pytest --cov --cov-branch -q
       - name: pip-audit (supply-chain, --strict)
         continue-on-error: true
         run: |
@@ -53,7 +53,7 @@ jobs:
       - working-directory: ./frontend
         run: npx tsc -b
       - working-directory: ./frontend
-        run: npm test
+        run: npx vitest run --coverage --reporter=minimal
       - name: a11y gate (vitest-axe smoke, wcag2a/wcag2aa; no browsers in CI)
         working-directory: ./frontend
         run: npx vitest run tests/a11y.spec.ts --reporter=minimal

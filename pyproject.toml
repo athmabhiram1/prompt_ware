@@ -18,3 +18,12 @@ ignore = ["F401"]
 
 [tool.pytest.ini_options]
 testpaths = ["backend"]
+
+[tool.coverage.run]
+source = ["backend/app"]
+branch = true
+omit = ["*/__pycache__/*"]
+
+[tool.coverage.report]
+fail_under = 80
+show_missing = true

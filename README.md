@@ -132,6 +132,16 @@ Measured 2026-09-22, `LLM_LIVE=0`, no keys (receipts in `.omo/notepads/nyayamitr
 ## Performance
 
 - `GET /demo/*` serves frozen JSON from disk (in-process `lru_cache`), asserted `< 2s` offline in tests — this is the Aura-paused / Render-cold survival path.
+- **HTTP cache semantics (frozen demo routes):** `GET /demo/{priya,msme,dpdp}` returns `ETag` (sha256 of canonical JSON, quoted) + `Cache-Control: public, max-age=3600` + `X-Cache: HIT/MISS`. A matching `If-None-Match` returns `304 Not Modified` with no body.
+- MISS to HIT to 304 curl proof (no server restart between calls):
+  ```bash
+  curl -i http://localhost:8000/demo/priya | grep -E "ETag|Cache-Control|X-Cache"
+  # ETag: "52475ea718201b8b"  Cache-Control: public, max-age=3600  X-Cache: MISS
+  curl -i http://localhost:8000/demo/priya | grep -E "ETag|X-Cache"
+  # X-Cache: HIT (same ETag)
+  curl -i -H "If-None-Match: \"52475ea718201b8b\"" http://localhost:8000/demo/priya
+  # 304 Not Modified  X-Cache: HIT
+  ```
 - Cache-first defaults (`LLM_LIVE=0`, `CACHE_MODE=preindex-only`) avoid cold-start indexing; `/ready` reports bundle presence.
 - Live-path latency (LightRAG query, Neo4j graph) is `to-measure-post-deploy` — not claimed here.
 

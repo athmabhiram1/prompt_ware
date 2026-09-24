@@ -55,8 +55,8 @@ export default function Chat() {
 
     return (
       <details className="mt-4 rounded-xl border border-[#d4c5a9] bg-[#eae3d2]/30 p-3 select-none">
-        <summary className="text-xs font-bold text-[#155e54] cursor-pointer outline-none flex items-center gap-1.5 hover:text-[#84cc16] transition-colors">
-          <FileText size={12} />
+        <summary className="text-xs font-bold text-[#155e54] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] rounded flex items-center gap-1.5 hover:text-[#84cc16] transition-colors">
+          <FileText size={12} aria-hidden="true" />
           Source Clauses & Verbatim Quotes
         </summary>
         <div className="mt-3 space-y-3 pl-1 select-text">
@@ -79,8 +79,8 @@ export default function Chat() {
     }
     return (
       <details className="mt-3 rounded-xl border border-[#d4c5a9] bg-[#eae3d2]/30 p-3 select-none">
-        <summary className="text-xs font-bold text-[#155e54] cursor-pointer outline-none flex items-center gap-1.5 hover:text-[#84cc16] transition-colors">
-          <Waypoints size={12} />
+        <summary className="text-xs font-bold text-[#155e54] cursor-pointer focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] rounded flex items-center gap-1.5 hover:text-[#84cc16] transition-colors">
+          <Waypoints size={12} aria-hidden="true" />
           Referenced Knowledge Nodes ({message.graphNodes.length})
         </summary>
         <ul className="mt-3 flex flex-wrap gap-1.5 pl-1">
@@ -184,7 +184,7 @@ export default function Chat() {
               id="doc-filter-select"
               value={activeDocId ?? ''}
               onChange={(event) => setActiveDoc(event.target.value || null)}
-              className="w-full bg-white border border-[#d4c5a9] rounded-xl p-3 text-xs font-bold text-[#155e54] focus:outline-none"
+              className="w-full bg-white border border-[#d4c5a9] rounded-xl p-3 text-xs font-bold text-[#155e54] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
             >
               <option value="">Auto (All ready docs)</option>
               {readyDocuments.map((doc) => (
@@ -211,7 +211,7 @@ export default function Chat() {
         {/* Toolbar Header */}
         <div className="px-6 py-4.5 border-b border-[#d4c5a9]/50 bg-[#eae3d2]/40 flex items-center justify-between z-10 select-none">
           <div>
-            <h3 className="font-headline font-bold text-lg text-[#155e54]">Risk Analysis Stream</h3>
+            <h1 className="font-headline font-bold text-lg text-[#155e54]">Risk Analysis Stream</h1>
             <p className="text-[10px] text-[#8c7e6b] font-bold uppercase tracking-wider mt-0.5">
               {activeDoc ? `Scoped: ${activeDoc.name}` : 'Scoped: Multi-Document Unified Context'}
             </p>
@@ -223,7 +223,7 @@ export default function Chat() {
               onClick={() => setDocsCollapsed((current) => !current)}
               className="inline-flex items-center gap-1.5 rounded-full border border-[#d4c5a9] bg-[#fbf9f4] px-3.5 py-1.5 text-xs text-[#155e54] hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-sm"
             >
-              {docsCollapsed ? <PanelLeftOpen size={13} /> : <PanelLeftClose size={13} />}
+              {docsCollapsed ? <PanelLeftOpen size={13} aria-hidden="true" /> : <PanelLeftClose size={13} aria-hidden="true" />}
               {docsCollapsed ? 'Show Scope' : 'Hide Scope'}
             </button>
 
@@ -233,7 +233,7 @@ export default function Chat() {
                 onClick={startNewChatSession}
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#d4c5a9] bg-[#fbf9f4] px-3.5 py-1.5 text-xs text-[#155e54] hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-sm"
               >
-                <RotateCcw size={13} />
+                <RotateCcw size={13} aria-hidden="true" />
                 Clear
               </button>
             )}
@@ -244,7 +244,7 @@ export default function Chat() {
                 onClick={() => navigate('/graph')}
                 className="inline-flex items-center gap-1.5 rounded-full border border-[#d4c5a9] bg-[#fbf9f4] px-3.5 py-1.5 text-xs text-[#155e54] hover:bg-white hover:scale-105 active:scale-95 transition-all shadow-sm"
               >
-                <Waypoints size={13} />
+                <Waypoints size={13} aria-hidden="true" />
                 View Graph
               </button>
             )}
@@ -256,14 +256,14 @@ export default function Chat() {
               className="inline-flex items-center gap-1.5 rounded-full border border-[#d4c5a9] bg-[#fbf9f4] px-3.5 py-1.5 text-xs text-[#155e54] hover:bg-white hover:scale-105 active:scale-95 transition-all disabled:opacity-60 shadow-sm"
               title="Toggle between cloud and local Ollama"
             >
-              {isLocalOllama ? <Server size={13} /> : <Cloud size={13} />}
+              {isLocalOllama ? <Server size={13} aria-hidden="true" /> : <Cloud size={13} aria-hidden="true" />}
               {isLocalOllama ? 'Local Ollama' : 'Cloud'}
             </button>
           </div>
         </div>
 
         {/* Messaging Stream */}
-        <div className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
+        <div role="log" aria-label="Risk analysis messages" className="flex-1 overflow-y-auto p-4 sm:p-6 md:p-8 space-y-6">
           {chatHistory.length === 0 && (
             <div className="rounded-2xl border border-dashed border-[#d4c5a9] bg-[#fbf9f4] p-8 text-center text-xs text-[#8c7e6b] font-medium leading-relaxed max-w-xl mx-auto">
               📜 Enter a query below to segment liability details. NyayaMitra will retrieve matching sections, calculate risk levels, and present citations automatically.
@@ -321,7 +321,7 @@ export default function Chat() {
                         }}
                         className="mt-4 inline-flex items-center gap-1 text-[10px] font-extrabold text-[#155e54] hover:text-[#84cc16] uppercase tracking-wider"
                       >
-                        Inspect in Canvas <ArrowRight size={10} />
+                        Inspect in Canvas <ArrowRight size={10} aria-hidden="true" />
                       </button>
                     )}
                   </div>
@@ -331,7 +331,7 @@ export default function Chat() {
           ))}
 
           {pendingQueryCount > 0 && (
-            <div className="rounded-2xl border border-[#d4c5a9]/60 bg-[#fbf9f4]/60 p-5 text-xs text-[#8c7e6b] font-bold animate-pulse uppercase tracking-wider">
+            <div role="status" className="rounded-2xl border border-[#d4c5a9]/60 bg-[#fbf9f4]/60 p-5 text-xs text-[#8c7e6b] font-bold animate-pulse uppercase tracking-wider">
               ⏳ Simplifying covenants and verifying clauses...
             </div>
           )}
@@ -341,24 +341,26 @@ export default function Chat() {
         {/* Input Bar */}
         <div className="p-5 bg-gradient-to-t from-[#fbf9f4] via-[#fbf9f4]/80 to-transparent border-t border-[#d4c5a9]/40 z-10">
           {readyDocuments.length === 0 && (
-            <p className="max-w-4xl mx-auto mb-3 text-xs font-bold text-rose-800 text-center">
+            <p role="alert" className="max-w-4xl mx-auto mb-3 text-xs font-bold text-rose-800 text-center">
               ⚠ No document is ready. Upload a PDF in the Upload tab to activate querying.
             </p>
           )}
           <form onSubmit={submitQuestion} className="max-w-4xl mx-auto relative group">
             <input
               type="text"
+              aria-label="Ask about liabilities, dispute clauses, and safety conditions"
               value={input}
               onChange={(event) => setInput(event.target.value)}
               placeholder="Ask anything about liabilities, dispute clauses, and safety conditions..."
-              className="w-full bg-[#fbf9f4] border border-[#d4c5a9] rounded-full py-4.5 px-6 pr-16 shadow-[0_8px_20px_rgba(45,38,30,0.03)] focus:outline-none focus:ring-1 focus:ring-[#155e54] text-sm text-[#2d261e] placeholder:text-[#8c7e6b]/70 font-semibold"
+              className="w-full bg-[#fbf9f4] border border-[#d4c5a9] rounded-full py-4.5 px-6 pr-16 shadow-[0_8px_20px_rgba(45,38,30,0.03)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] focus:ring-1 focus:ring-[#155e54] text-sm text-[#2d261e] placeholder:text-[#8c7e6b]/70 font-semibold"
             />
             <button
               type="submit"
+              aria-label="Send question"
               disabled={!input.trim() || pendingQueryCount > 0 || readyDocuments.length === 0}
-              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-11 h-11 bg-[#155e54] rounded-full flex items-center justify-center text-white shadow-md hover:bg-[#84cc16] hover:scale-105 active:scale-95 disabled:bg-[#8c7e6b]/50 disabled:cursor-not-allowed transition-all"
+              className="absolute right-2.5 top-1/2 -translate-y-1/2 w-11 h-11 bg-[#155e54] rounded-full flex items-center justify-center text-white shadow-md hover:bg-[#84cc16] hover:scale-105 active:scale-95 disabled:bg-[#8c7e6b]/50 disabled:cursor-not-allowed transition-all focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
             >
-              <Send size={15} strokeWidth={2.3} />
+              <Send size={15} strokeWidth={2.3} aria-hidden="true" />
             </button>
           </form>
         </div>

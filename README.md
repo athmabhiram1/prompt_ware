@@ -107,7 +107,7 @@ Measured 2026-09-22, `LLM_LIVE=0`, no keys (receipts in `.omo/notepads/nyayamitr
 - Backend: `python -m pytest backend -q` → **40 passed, 2 skipped** (2 pre-existing skips)
 - Demo gate: `python -m pytest backend/tests/test_demo.py -q` → **8 passed**, network syscalls blocked, `/demo/priya` < 2s
 - Lint: `ruff check backend/app` → clean (CI also runs `ruff format --check` on owned files)
-- Frontend (via CI): `npm run lint`, `npx tsc -b`, `npm test` (vitest: `simplify.test.ts`, `skeleton.test.ts`)
+- Frontend (via CI): `npm run lint`, `npx tsc -b`, `npm test` (vitest: `simplify.test.ts`, `skeleton.test.ts`, `tests/a11y.spec.ts` axe smoke)
 - No coverage % is claimed (no coverage gate configured); no latency is claimed for live paths (`to-measure-post-deploy`).
 
 ## Security
@@ -125,7 +125,7 @@ Measured 2026-09-22, `LLM_LIVE=0`, no keys (receipts in `.omo/notepads/nyayamitr
 
 ## A11y
 
-- CI carries an axe gate that is currently a **stub** (`.github/workflows/ci.yml:46-49` — prints `axe stub: no a11y spec yet` when `tests/a11y.spec.ts` is absent). Full `@axe-core/playwright` spec is a post-submission TODO; no a11y conformance level is claimed.
+- Wave A real axe gate: `frontend/tests/a11y.spec.ts` runs a vitest-axe smoke on the App shell (`runOnly: ['wcag2a', 'wcag2aa']`, `color-contrast` allowlisted — sepia/parchment palette debt, no redesign). `eslint-plugin-jsx-a11y` (recommended, flat config) runs in `npm run lint`. Static P1 fixes landed: real document title, header/nav/main/footer landmarks, skip link, icon-button names, input labels, `role=log`/`status`/`alert`/`progressbar` live regions, one h1 per route, `:focus-visible` rings, `aria-hidden` on decorative icons. Graph-canvas keyboard support deferred (out of scope for Wave A). No a11y conformance level beyond the gate is claimed.
 
 ## Performance
 

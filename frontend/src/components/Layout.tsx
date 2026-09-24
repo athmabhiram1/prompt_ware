@@ -155,9 +155,15 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="h-screen relative overflow-hidden flex bg-[#f4f0e6] text-[#2d261e] font-sans selection:bg-lime-200/50">
-      
+      <a
+        href="#main-content"
+        className="sr-only focus:not-sr-only focus:absolute focus:top-2 focus:left-2 focus:z-[60] focus:rounded-full focus:bg-white focus:px-4 focus:py-2 focus:text-xs focus:font-bold focus:text-[#155e54] focus:outline-2 focus:outline-[#155e54]"
+      >
+        Skip to main content
+      </a>
+
       {/* Decorative Top Flourish Border */}
-      <div className="absolute top-0 left-0 right-0 h-[6px] bg-gradient-to-r from-amber-700 via-yellow-600 to-amber-700 z-50 shadow-md" />
+      <div aria-hidden="true" className="absolute top-0 left-0 right-0 h-[6px] bg-gradient-to-r from-amber-700 via-yellow-600 to-amber-700 z-50 shadow-md" />
 
       {/* Side Bar Navigation */}
       <AnimatePresence initial={false}>
@@ -166,16 +172,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
             initial={{ width: 0, opacity: 0 }}
             animate={{ width: 300, opacity: 1 }}
             exit={{ width: 0, opacity: 0 }}
+            aria-label="Workspace and documents sidebar"
             className="flex-shrink-0 bg-[#eae3d2] border-r border-[#d4c5a9] flex flex-col h-full overflow-hidden z-40 select-none"
           >
             <div className="w-[300px] flex flex-col h-full p-6 space-y-6">
               
               {/* Header Brand */}
-              <div className="flex items-center justify-between border-b border-[#d4c5a9]/50 pb-4">
+              <header className="flex items-center justify-between border-b border-[#d4c5a9]/50 pb-4">
                 <Link to="/" className="text-2xl font-extrabold tracking-tighter text-[#155e54] font-headline flex items-center gap-2">
                   <span className="text-[#84cc16]">📜</span> NyayaMitra
                 </Link>
-              </div>
+              </header>
 
               {/* Workspace Selector */}
               <div className="space-y-2">
@@ -185,10 +192,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   </label>
                   <button 
                     onClick={() => setShowAddCompany(!showAddCompany)}
-                    className="text-[#155e54] hover:text-[#84cc16] transition-colors"
+                    aria-label="Add new workspace"
+                    aria-expanded={showAddCompany}
+                    className="text-[#155e54] hover:text-[#84cc16] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] rounded"
                     title="Add new workspace"
                   >
-                    <Plus size={14} strokeWidth={3} />
+                    <Plus size={14} strokeWidth={3} aria-hidden="true" />
                   </button>
                 </div>
 
@@ -198,7 +207,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   onChange={(e) => {
                     void handleWorkspaceSwitch(e.target.value);
                   }}
-                  className="w-full bg-[#fbf9f4] border border-[#d4c5a9] rounded-xl px-3 py-2 text-xs font-bold text-[#155e54] focus:outline-none"
+                  className="w-full bg-[#fbf9f4] border border-[#d4c5a9] rounded-xl px-3 py-2 text-xs font-bold text-[#155e54] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
                 >
                   {workspaces.map((c) => {
                     const config = workspaceConfigs[c] || { useLocalOllama: false };
@@ -212,7 +221,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
 
               {/* Sidebar Links */}
-              <div className="space-y-1">
+              <nav aria-label="Primary" className="space-y-1">
                 {navLinks.map((link) => {
                   const isActive = location.pathname === link.path;
                   const Icon = link.icon;
@@ -227,12 +236,12 @@ export function Layout({ children }: { children: React.ReactNode }) {
                           : "text-[#8c7e6b] border-transparent hover:bg-[#fbf9f4]/50 hover:text-[#155e54]"
                       )}
                     >
-                      <Icon size={16} strokeWidth={2.3} className={isActive ? "text-[#84cc16]" : ""} />
+                      <Icon size={16} strokeWidth={2.3} aria-hidden="true" className={isActive ? "text-[#84cc16]" : ""} />
                       {link.label}
                     </Link>
                   );
                 })}
-              </div>
+              </nav>
 
               {/* Documents Scoped List */}
               <div className="flex-1 flex flex-col min-h-0 space-y-2 border-t border-[#d4c5a9]/50 pt-4">
@@ -254,7 +263,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                       return (
                         <div
                           key={doc.name}
+                          role="button"
+                          tabIndex={doc.status === 'ready' ? 0 : -1}
+                          aria-pressed={isSelected}
+                          aria-disabled={doc.status !== 'ready'}
                           onClick={() => doc.status === 'ready' && setActiveDoc(isSelected ? null : doc.id)}
+                          onKeyDown={(e) => {
+                            if (doc.status !== 'ready') return;
+                            if (e.key === 'Enter' || e.key === ' ') {
+                              e.preventDefault();
+                              setActiveDoc(isSelected ? null : doc.id);
+                            }
+                          }}
                           className={cn(
                             "group flex items-center justify-between p-3 rounded-xl border transition-all cursor-pointer shadow-[0_2px_4px_rgba(0,0,0,0.02)]",
                             isSelected
@@ -267,7 +287,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
                               "w-7 h-7 rounded-lg flex items-center justify-center text-xs",
                               isSelected ? "bg-[#155e54] text-white" : "bg-[#155e54]/10 text-[#155e54]"
                             )}>
-                              <FileText size={14} />
+                              <FileText size={14} aria-hidden="true" />
                             </div>
                             <div className="min-w-0 flex-1">
                               <p className="text-[11px] font-semibold truncate text-[#2d261e]">{doc.name}</p>
@@ -284,10 +304,11 @@ export function Layout({ children }: { children: React.ReactNode }) {
                             )}
                             <button
                               onClick={(e) => handleDelete(doc.id, e)}
-                              className="text-[#8c7e6b] hover:text-red-600 p-1 rounded hover:bg-red-50 opacity-0 group-hover:opacity-100 transition-opacity"
+                              aria-label={`Delete ${doc.name}`}
+                              className="text-[#8c7e6b] hover:text-red-600 p-1 rounded hover:bg-red-50 opacity-0 group-hover:opacity-100 focus-visible:opacity-100 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-red-600 transition-opacity"
                               title="Delete document"
                             >
-                              <Trash2 size={12} />
+                              <Trash2 size={12} aria-hidden="true" />
                             </button>
                           </div>
                         </div>
@@ -298,7 +319,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               </div>
 
               {/* Lower visual limits container */}
-              <div className="border-t border-[#d4c5a9]/50 pt-4 space-y-3">
+              <footer className="border-t border-[#d4c5a9]/50 pt-4 space-y-3">
                 <div className="bg-[#fbf9f4] border border-[#d4c5a9] rounded-2xl p-3.5 space-y-2.5 shadow-sm">
                   <div className="flex justify-between items-center text-[10px] font-bold text-[#8c7e6b]">
                     <span>Documents Limit</span>
@@ -323,10 +344,10 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 </div>
 
                 <div className="flex items-center gap-3 justify-center text-[#8c7e6b]">
-                  <UserCircle size={16} />
+                  <UserCircle size={16} aria-hidden="true" />
                   <span className="text-[10px] font-bold tracking-wider uppercase">{companyId}</span>
                 </div>
-              </div>
+              </footer>
 
             </div>
           </motion.aside>
@@ -336,19 +357,21 @@ export function Layout({ children }: { children: React.ReactNode }) {
       {/* Sidebar Toggle Handle Button */}
       <button
         onClick={() => setSidebarOpen(!sidebarOpen)}
-        className="absolute left-0 top-1/2 -translate-y-1/2 z-50 w-7 h-14 bg-[#eae3d2] border border-[#d4c5a9] border-l-0 rounded-r-2xl shadow-md flex items-center justify-center text-[#8c7e6b] hover:text-[#155e54] transition-colors"
+        aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+        aria-expanded={sidebarOpen}
+        className="absolute left-0 top-1/2 -translate-y-1/2 z-50 w-7 h-14 bg-[#eae3d2] border border-[#d4c5a9] border-l-0 rounded-r-2xl shadow-md flex items-center justify-center text-[#8c7e6b] hover:text-[#155e54] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
         style={{ left: sidebarOpen ? '300px' : '0px', transition: 'left 0.2s ease-in-out' }}
       >
-        {sidebarOpen ? <ChevronLeft size={16} strokeWidth={2.5} /> : <ChevronRight size={16} strokeWidth={2.5} />}
+        {sidebarOpen ? <ChevronLeft size={16} strokeWidth={2.5} aria-hidden="true" /> : <ChevronRight size={16} strokeWidth={2.5} aria-hidden="true" />}
       </button>
 
       {/* Main Content Pane */}
-      <main className="flex-1 min-w-0 h-full overflow-y-auto relative p-6 md:p-8 lg:p-10 flex flex-col">
+      <main id="main-content" tabIndex={-1} className="flex-1 min-w-0 h-full overflow-y-auto relative p-6 md:p-8 lg:p-10 flex flex-col focus-visible:outline-none">
         {/* Gorgeous Mural Flourish Frames */}
-        <div className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#8c7e6b]/30 pointer-events-none" />
-        <div className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-[#8c7e6b]/30 pointer-events-none" />
-        <div className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-[#8c7e6b]/30 pointer-events-none" />
-        <div className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#8c7e6b]/30 pointer-events-none" />
+        <div aria-hidden="true" className="absolute top-4 left-4 w-6 h-6 border-t-2 border-l-2 border-[#8c7e6b]/30 pointer-events-none" />
+        <div aria-hidden="true" className="absolute top-4 right-4 w-6 h-6 border-t-2 border-r-2 border-[#8c7e6b]/30 pointer-events-none" />
+        <div aria-hidden="true" className="absolute bottom-4 left-4 w-6 h-6 border-b-2 border-l-2 border-[#8c7e6b]/30 pointer-events-none" />
+        <div aria-hidden="true" className="absolute bottom-4 right-4 w-6 h-6 border-b-2 border-r-2 border-[#8c7e6b]/30 pointer-events-none" />
 
         <div className="flex-grow flex flex-col justify-start relative z-10 max-w-[1400px] w-full mx-auto">
           {children}
@@ -362,14 +385,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
               initial={{ scale: 0.95, opacity: 0 }}
               animate={{ scale: 1, opacity: 1 }}
               exit={{ scale: 0.95, opacity: 0 }}
+              role="dialog"
+              aria-modal="true"
+              aria-labelledby="workspace-dialog-title"
               className="bg-[#fbf9f4] border border-[#d4c5a9] rounded-3xl p-6 shadow-2xl max-w-sm w-full space-y-5 relative"
             >
               {/* Corner Accents */}
-              <div className="absolute top-3 left-3 w-3 h-3 border-t border-l border-[#8c7e6b]/40 pointer-events-none" />
-              <div className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-[#8c7e6b]/40 pointer-events-none" />
+              <div aria-hidden="true" className="absolute top-3 left-3 w-3 h-3 border-t border-l border-[#8c7e6b]/40 pointer-events-none" />
+              <div aria-hidden="true" className="absolute bottom-3 right-3 w-3 h-3 border-b border-r border-[#8c7e6b]/40 pointer-events-none" />
 
               <div className="space-y-1">
-                <h3 className="font-headline font-bold text-lg text-[#155e54] uppercase tracking-wide">Initialize Workspace</h3>
+                <h3 id="workspace-dialog-title" className="font-headline font-bold text-lg text-[#155e54] uppercase tracking-wide">Initialize Workspace</h3>
                 <p className="text-xs text-[#8c7e6b] font-medium leading-relaxed">
                   Configure the primary LLM model and vector space provider for this custom workspace boundary.
                 </p>
@@ -377,28 +403,29 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
               <form onSubmit={handleNewWorkspaceSubmit} className="space-y-4">
                 <div className="space-y-1.5">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#8c7e6b]">
+                  <label htmlFor="workspace-name-input" className="text-[10px] font-extrabold uppercase tracking-wider text-[#8c7e6b]">
                     Workspace Name / ID
                   </label>
                   <input
+                    id="workspace-name-input"
                     type="text"
                     required
                     value={newCompanyInput}
                     onChange={(e) => setNewCompanyInput(e.target.value)}
                     placeholder="e.g. zomato, netflix"
-                    className="w-full bg-white border border-[#d4c5a9] rounded-xl px-3.5 py-2.5 text-xs font-bold focus:outline-none focus:ring-1 focus:ring-[#155e54] text-[#155e54]"
-                    autoFocus
+                    className="w-full bg-white border border-[#d4c5a9] rounded-xl px-3.5 py-2.5 text-xs font-bold focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] focus:ring-1 focus:ring-[#155e54] text-[#155e54]"
                   />
                 </div>
 
                 <div className="space-y-2">
-                  <label className="text-[10px] font-extrabold uppercase tracking-wider text-[#8c7e6b]">
+                  <p id="workspace-provider-label" className="text-[10px] font-extrabold uppercase tracking-wider text-[#8c7e6b]">
                     Indexing Provider Config
-                  </label>
+                  </p>
                   
-                  <div className="grid grid-cols-2 gap-2">
+                  <div className="grid grid-cols-2 gap-2" role="group" aria-labelledby="workspace-provider-label">
                     <button
                       type="button"
+                      aria-pressed={newCompanyProvider}
                       onClick={() => setNewCompanyProvider(true)}
                       className={cn(
                         "p-3 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition-all text-center",
@@ -413,6 +440,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
                     <button
                       type="button"
+                      aria-pressed={!newCompanyProvider}
                       onClick={() => setNewCompanyProvider(false)}
                       className={cn(
                         "p-3 rounded-xl border flex flex-col items-center justify-center gap-1.5 transition-all text-center",

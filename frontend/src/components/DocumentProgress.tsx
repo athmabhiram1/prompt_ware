@@ -34,17 +34,28 @@ export function DocumentProgress({ status }: { status: DocumentStatus }) {
     stageLabel = 'Finalizing writes...';
   }
 
+  const rounded = Math.round(progress);
+
   return (
     <div className="mt-2 w-full space-y-1">
-      <div className="w-full bg-[#eae3d2] rounded-full h-1.5 overflow-hidden">
+      <div
+        role="progressbar"
+        aria-label="Document indexing progress"
+        aria-valuemin={0}
+        aria-valuemax={100}
+        aria-valuenow={rounded}
+        aria-valuetext={`${stageLabel} ${rounded}%`}
+        className="w-full bg-[#eae3d2] rounded-full h-1.5 overflow-hidden"
+      >
         <div
+          aria-hidden="true"
           className="bg-amber-500 h-full transition-all duration-300 ease-out animate-pulse"
           style={{ width: `${progress}%` }}
         />
       </div>
-      <div className="flex justify-between text-[9px] font-bold text-[#8c7e6b] tracking-tight">
+      <div aria-hidden="true" className="flex justify-between text-[9px] font-bold text-[#8c7e6b] tracking-tight">
         <span>{stageLabel}</span>
-        <span>{Math.round(progress)}%</span>
+        <span>{rounded}%</span>
       </div>
     </div>
   );

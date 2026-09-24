@@ -75,7 +75,7 @@ export default function DiffView({ a, b, premise = "residential", result }: Prop
           Export .docx
         </button>
       </div>
-      {error && <p className="text-sm text-red-700">{error}</p>}
+      {error && <p role="alert" className="text-sm text-red-700">{error}</p>}
       <table className="w-full table-fixed border-collapse text-sm">
         <thead>
           <tr className="bg-gray-100">

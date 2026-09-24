@@ -43,7 +43,7 @@ jobs:
         run: npx tsc -b
       - working-directory: ./frontend
         run: npm test
-      - name: a11y gate (stub — full @axe-core/playwright lands in Wave 2)
+      - name: a11y gate (vitest-axe smoke, wcag2a/wcag2aa; no browsers in CI)
         working-directory: ./frontend
         run: npx vitest run tests/a11y.spec.ts --reporter=minimal
 

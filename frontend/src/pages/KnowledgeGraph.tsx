@@ -109,14 +109,15 @@ function FlowInner({ nodes, edges, highlightedNodes, isLoading, stats }: FlowInn
               <button
                 type="button"
                 onClick={clearSelection}
-                className="text-[#8c7e6b] hover:text-[#155e54] transition-colors"
+                aria-label="Close entity details"
+                className="text-[#8c7e6b] hover:text-[#155e54] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54] rounded"
               >
-                <X size={15} />
+                <X size={15} aria-hidden="true" />
               </button>
             </div>
 
             {isFetchingDetail ? (
-              <p className="mt-4 text-xs text-[#8c7e6b] font-bold animate-pulse uppercase tracking-wider">Loading details…</p>
+              <p role="status" className="mt-4 text-xs text-[#8c7e6b] font-bold animate-pulse uppercase tracking-wider">Loading details…</p>
             ) : nodeDetail ? (
               <div className="mt-4 space-y-3.5 text-xs text-[#2d261e] font-semibold">
                 <p className="font-bold text-[#1a2e05] text-sm break-words uppercase tracking-wide">{nodeDetail.label}</p>
@@ -148,7 +149,7 @@ function FlowInner({ nodes, edges, highlightedNodes, isLoading, stats }: FlowInn
         ) : (
           <>
             <h3 className="font-headline font-bold text-sm text-[#155e54] uppercase tracking-wider flex items-center gap-1">
-              <Compass size={14} className="text-[#84cc16]" /> Graph Insights
+              <Compass size={14} aria-hidden="true" className="text-[#84cc16]" /> Graph Insights
             </h3>
             <div className="mt-4 space-y-2 text-xs text-[#8c7e6b] font-bold uppercase tracking-wide leading-relaxed">
               <p>🟢 {stats.node_count} legal entities</p>
@@ -160,9 +161,9 @@ function FlowInner({ nodes, edges, highlightedNodes, isLoading, stats }: FlowInn
             <button
               type="button"
               onClick={() => fitView({ duration: 300 })}
-              className="mt-6 w-full rounded-full bg-[#155e54] text-white py-3 text-[10px] font-extrabold tracking-[0.14em] uppercase flex items-center justify-center gap-2 hover:bg-[#84cc16] active:scale-95 transition-all shadow-md"
+              className="mt-6 w-full rounded-full bg-[#155e54] text-white py-3 text-[10px] font-extrabold tracking-[0.14em] uppercase flex items-center justify-center gap-2 hover:bg-[#84cc16] active:scale-95 transition-all shadow-md focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
             >
-              <Download size={13} />
+              <Download size={13} aria-hidden="true" />
               Re-center view
             </button>
           </>
@@ -174,29 +175,32 @@ function FlowInner({ nodes, edges, highlightedNodes, isLoading, stats }: FlowInn
         <button
           type="button"
           onClick={() => zoomIn({ duration: 300 })}
-          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors"
+          aria-label="Zoom in on graph"
+          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
         >
-          <ZoomIn size={16} strokeWidth={2.3} />
+          <ZoomIn size={16} strokeWidth={2.3} aria-hidden="true" />
         </button>
         <button
           type="button"
           onClick={() => zoomOut({ duration: 300 })}
-          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors"
+          aria-label="Zoom out of graph"
+          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
         >
-          <ZoomOut size={16} strokeWidth={2.3} />
+          <ZoomOut size={16} strokeWidth={2.3} aria-hidden="true" />
         </button>
-        <div className="w-6 h-px bg-[#d4c5a9] mx-auto" />
+        <div aria-hidden="true" className="w-6 h-px bg-[#d4c5a9] mx-auto" />
         <button
           type="button"
           onClick={() => fitView({ duration: 300 })}
-          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors"
+          aria-label="Re-center graph view"
+          className="w-10 h-10 rounded-full hover:bg-white flex items-center justify-center text-[#155e54] transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
         >
-          <Focus size={16} strokeWidth={2.3} />
+          <Focus size={16} strokeWidth={2.3} aria-hidden="true" />
         </button>
       </div>
 
       {isLoading && (
-        <div className="absolute inset-0 z-30 bg-[#fbf9f4]/85 backdrop-blur-[2px] flex items-center justify-center text-[#155e54] font-extrabold uppercase text-xs tracking-wider select-none">
+        <div role="status" className="absolute inset-0 z-30 bg-[#fbf9f4]/85 backdrop-blur-[2px] flex items-center justify-center text-[#155e54] font-extrabold uppercase text-xs tracking-wider select-none">
           ✨ Extracting relationship coordinates...
         </div>
       )}
@@ -304,7 +308,7 @@ export default function KnowledgeGraph() {
     return (
       <div className="h-[calc(100vh-12rem)] rounded-[2rem] shadow-[0_20px_40px_rgba(45,38,30,0.04)] parchment-card p-8 flex items-center justify-center">
         <div className="max-w-xl text-center space-y-5">
-          <h2 className="font-headline font-extrabold text-xl sm:text-2xl md:text-3xl text-[#155e54]">Complete chat to unlock graph</h2>
+          <h1 className="font-headline font-extrabold text-xl sm:text-2xl md:text-3xl text-[#155e54]">Complete chat to unlock graph</h1>
           <p className="text-xs text-[#8c7e6b] font-medium leading-relaxed">
             NyayaMitra builds the knowledge map dynamically based on your contract analyses. Complete at least one query in the Risk Chat to activate the interactive canvas.
           </p>
@@ -322,14 +326,16 @@ export default function KnowledgeGraph() {
 
   return (
     <div className="relative h-[calc(100vh-12rem)] rounded-[2rem] overflow-hidden border border-[#d4c5a9] shadow-[0_20px_40px_rgba(45,38,30,0.05)] bg-[#fbf9f4]">
+      <h1 className="sr-only">Knowledge graph</h1>
       
       {/* Top Scope bar */}
       <div className="absolute left-6 top-6 z-20 parchment-card rounded-2xl p-3 border border-[#d4c5a9] select-none">
         <p className="text-[9px] font-extrabold uppercase tracking-wider text-[#155e54]">Active Document Target</p>
         <select
           value={activeDocId ?? ''}
+          aria-label="Active document target"
           onChange={(event) => setActiveDoc(event.target.value || null)}
-          className="mt-1 bg-white border border-[#d4c5a9] rounded-lg px-2.5 py-1 text-xs text-[#155e54] font-bold min-w-[220px] focus:outline-none"
+          className="mt-1 bg-white border border-[#d4c5a9] rounded-lg px-2.5 py-1 text-xs text-[#155e54] font-bold min-w-[220px] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#155e54]"
         >
           <option value="">All indexed documents</option>
           {readyDocuments.map((doc) => (

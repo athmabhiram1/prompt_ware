@@ -76,7 +76,7 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
           >
             <div className="w-[320px] space-y-8 pr-4">
               <div className="space-y-1">
-                <h2 className="text-2xl font-extrabold tracking-tight text-[#004541]">Active Documents</h2>
+                <h1 className="text-2xl font-extrabold tracking-tight text-[#004541]">Active Documents</h1>
                 <p className="text-gray-500 text-sm font-medium">4 files currently being analyzed</p>
               </div>
 
@@ -95,7 +95,7 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
                       <div className={`w-10 h-10 rounded-lg flex items-center justify-center
                         ${doc.active ? 'bg-[#004541] text-white' : 'bg-[#004541]/5 text-[#004541]'}
                       `}>
-                        <FileText size={18} />
+                        <FileText size={18} aria-hidden="true" />
                       </div>
                       <div>
                         <p className={`text-sm font-semibold ${doc.active ? 'text-[#004541]' : 'text-gray-900'}`}>
@@ -106,7 +106,7 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
                         </p>
                       </div>
                     </div>
-                    <CheckCircle2 size={18} className={doc.active ? 'text-[#004541]' : 'text-green-600/60'} />
+                    <CheckCircle2 size={18} aria-hidden="true" className={doc.active ? 'text-[#004541]' : 'text-green-600/60'} />
                   </div>
                 ))}
               </div>
@@ -125,9 +125,11 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
         {/* Sidebar Toggle Button */}
         <button 
           onClick={() => setSidebarOpen(!sidebarOpen)}
-          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center text-gray-500 hover:text-gray-800 transition-colors"
+          aria-label={sidebarOpen ? 'Collapse sidebar' : 'Expand sidebar'}
+          aria-expanded={sidebarOpen}
+          className="absolute -left-4 top-1/2 -translate-y-1/2 z-20 w-8 h-8 bg-white border border-gray-200 rounded-full shadow-md flex items-center justify-center text-gray-500 hover:text-gray-800 transition-colors focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#004541]"
         >
-          {sidebarOpen ? <ChevronLeft size={18} /> : <ChevronRight size={18} />}
+          {sidebarOpen ? <ChevronLeft size={18} aria-hidden="true" /> : <ChevronRight size={18} aria-hidden="true" />}
         </button>
 
         <div className="flex-1 glass-panel bg-white/70 rounded-[24px] shadow-[0_20px_40px_rgba(17,24,39,0.03)] flex flex-col overflow-hidden relative border border-white">
@@ -167,10 +169,10 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
 
                       <div className="mt-8 pt-6 border-t border-gray-100 flex gap-4">
                         <button className="flex items-center gap-2 text-xs font-bold text-[#004541] hover:opacity-70 transition-opacity uppercase">
-                          <Bookmark size={14} /> Save to Report
+                          <Bookmark size={14} aria-hidden="true" /> Save to Report
                         </button>
                         <button className="flex items-center gap-2 text-xs font-bold text-[#004541] hover:opacity-70 transition-opacity uppercase">
-                          <Share2 size={14} /> Share with Legal
+                          <Share2 size={14} aria-hidden="true" /> Share with Legal
                         </button>
                       </div>
                     </div>
@@ -203,17 +205,19 @@ export default function Dashboard({ activeTab = "Chat" }: { activeTab?: string }
                 <form onSubmit={handleSubmit} className="max-w-4xl mx-auto relative group">
                   <input
                     type="text"
+                    aria-label="Ask NyayaMitra about your documents"
                     value={input}
                     onChange={(e) => setInput(e.target.value)}
                     placeholder="Ask NyayaMitra anything about your documents..."
-                    className="w-full bg-white border border-gray-200 rounded-full py-5 px-8 pr-16 shadow-[0_10px_30px_rgba(0,0,0,0.04)] focus:outline-none focus:ring-2 focus:ring-[#004541]/20 text-gray-800 placeholder:text-gray-400 text-[15px] transition-all"
+                    className="w-full bg-white border border-gray-200 rounded-full py-5 px-8 pr-16 shadow-[0_10px_30px_rgba(0,0,0,0.04)] focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#004541] focus:ring-2 focus:ring-[#004541]/20 text-gray-800 placeholder:text-gray-400 text-[15px] transition-all"
                   />
                   <button
                     type="submit"
+                    aria-label="Send message"
                     disabled={!input.trim()}
-                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-[#004541] disabled:bg-gray-300 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform"
+                    className="absolute right-3 top-1/2 -translate-y-1/2 w-11 h-11 bg-[#004541] disabled:bg-gray-300 rounded-full flex items-center justify-center text-white shadow-lg hover:scale-105 transition-transform focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[#004541]"
                   >
-                    <Send size={18} className="-ml-0.5" />
+                    <Send size={18} aria-hidden="true" className="-ml-0.5" />
                   </button>
                 </form>
               </div>

@@ -137,7 +137,7 @@ export default function Landing() {
             className="inline-flex items-center gap-1.5 rounded-full border border-[#d4c5a9] bg-[#fbf9f4] px-4 py-2 text-xs font-bold text-[#155e54] hover:bg-white hover:scale-105 active:scale-95 transition-all disabled:opacity-60 shadow-sm self-start sm:self-auto"
             title="Toggle between cloud and local Ollama"
           >
-            {isLocalOllama ? <Server size={13} /> : <Cloud size={13} />}
+            {isLocalOllama ? <Server size={13} aria-hidden="true" /> : <Cloud size={13} aria-hidden="true" />}
             {isLocalOllama ? 'Local Ollama' : 'Cloud'}
           </button>
         </div>
@@ -155,7 +155,7 @@ export default function Landing() {
             className="w-full rounded-2xl border-2 border-dashed border-[#d4c5a9] bg-[#fbf9f4]/40 p-12 text-center hover:border-[#155e54] hover:bg-[#eae3d2]/20 transition-all group"
             disabled={isUploading}
           >
-            <Upload className="mx-auto text-[#155e54] group-hover:text-[#84cc16] transition-colors" size={32} strokeWidth={2.3} />
+            <Upload aria-hidden="true" className="mx-auto text-[#155e54] group-hover:text-[#84cc16] transition-colors" size={32} strokeWidth={2.3} />
             <p className="mt-4 text-[#2d261e] font-bold text-lg">
               {isUploading ? 'Analyzing and segmenting text...' : 'Select a PDF File'}
             </p>
@@ -168,6 +168,7 @@ export default function Landing() {
             ref={fileInputRef}
             type="file"
             accept="application/pdf"
+            aria-label="Upload a PDF document"
             className="hidden"
             onChange={(event) => {
               const file = event.target.files?.[0];
@@ -179,8 +180,8 @@ export default function Landing() {
           />
 
           {uploadError && (
-            <div className="mt-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs px-4 py-2.5 rounded-xl font-bold flex items-center gap-2">
-              <AlertCircle size={14} />
+            <div role="alert" className="mt-4 bg-rose-50 border border-rose-200 text-rose-800 text-xs px-4 py-2.5 rounded-xl font-bold flex items-center gap-2">
+              <AlertCircle size={14} aria-hidden="true" />
               {uploadError}
             </div>
           )}
@@ -192,7 +193,7 @@ export default function Landing() {
               className="h-12 px-6 rounded-full bg-[#155e54] text-white font-bold text-xs uppercase tracking-wider flex items-center gap-2 hover:bg-[#84cc16] active:scale-95 transition-all shadow-md"
             >
               Analyze Chat
-              <ArrowRight size={14} />
+              <ArrowRight size={14} aria-hidden="true" />
             </button>
             <button
               type="button"
@@ -249,7 +250,7 @@ export default function Landing() {
                       <DocumentProgress status={doc.status} />
                     </div>
                     <span className={`text-[9px] px-2.5 py-1 border rounded-full font-bold uppercase tracking-wider flex items-center gap-1 ${Style.bg}`}>
-                      <StatusIcon size={10} />
+                      <StatusIcon size={10} aria-hidden="true" />
                       {doc.status}
                     </span>
                   </div>
@@ -265,7 +266,7 @@ export default function Landing() {
             onClick={() => navigate('/chat')}
             className="mt-6 w-full h-12 rounded-full bg-[#155e54] text-white font-bold text-xs uppercase tracking-wider flex items-center justify-center gap-2 hover:bg-[#84cc16] active:scale-95 transition-all shadow-md"
           >
-            <FileText size={14} />
+            <FileText size={14} aria-hidden="true" />
             Analyze Active Document
           </button>
         )}

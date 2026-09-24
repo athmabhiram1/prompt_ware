@@ -42,6 +42,15 @@ body {
   min-height: 100vh;
 }
 
+/* Wave A a11y: every keyboard interaction must show a visible focus
+   indicator. Components use focus-visible: utilities for their own
+   styling; this base rule guarantees a ring even where a component
+   only removed the default outline. */
+:focus-visible {
+  outline: 2px solid var(--primary);
+  outline-offset: 2px;
+}
+
 #root {
   min-height: 100vh;
 }

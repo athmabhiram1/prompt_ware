@@ -1,36 +1,39 @@
-import { describe, expect, it } from "vitest";
+// @vitest-environment jsdom
+import { StrictMode, createElement } from 'react';
+import { createRoot } from 'react-dom/client';
+import { act } from 'react';
+import { describe, expect, it } from 'vitest';
+import { axe } from 'vitest-axe';
+import * as matchers from 'vitest-axe/matchers';
+import App from '../src/App';
 
-// a11y gate stub (W2.1): full @axe-core/playwright lands in Wave 3.
-// This spec locks the slider/proof-bar contract that axe will verify:
-// every simplify sentence cited (proof bar reads 100%), slider levels
-// ordered with live-region labels, flowchart always has 4 rows.
-import {
-  LEVELS,
-  assertAllCited,
-  levelLabel,
-  obligationSteps,
-} from "../src/lib/simplify";
+expect.extend(matchers);
 
-describe("a11y stub: simplify slider + proof bar", () => {
-  it("slider levels are keyboard-ordered with announced labels", () => {
-    expect(LEVELS).toEqual(["5", "8", "10", "pro"]);
-    for (const level of LEVELS) {
-      expect(levelLabel(level).length).toBeGreaterThan(0);
+async function renderAppShell(): Promise<HTMLElement> {
+  const container = document.createElement('div');
+  document.body.appendChild(container);
+  const root = createRoot(container);
+  await act(async () => {
+    root.render(createElement(StrictMode, null, createElement(App)));
+  });
+  return container;
+}
+
+describe('a11y smoke (vitest-axe)', () => {
+  it('App shell has no wcag2a/wcag2aa violations', async () => {
+    const container = await renderAppShell();
+    const results = await axe(container, {
+      // color-contrast debt allowlisted (Wave A): sepia/parchment palette
+      // fails 4.5:1 on muted text; palette redesign explicitly out of scope.
+      runOnly: ['wcag2a', 'wcag2aa'],
+      rules: { 'color-contrast': { enabled: false } },
+    });
+    if (results.violations.length > 0) {
+      console.log(
+        `axe violations: ${results.violations.length} rules, ${results.violations.reduce((n, v) => n + v.nodes.length, 0)} nodes :: ` +
+          results.violations.map((v) => `${v.id}(${v.nodes.length})`).sort().join(', '),
+      );
     }
-    // Slider contract: native range 0..3, aria-valuetext = levelLabel,
-    // status live region announces changes (see ReadingSlider.tsx).
-  });
-
-  it("proof bar can reach 100% cited (client-side rejection otherwise)", () => {
-    expect(() =>
-      assertAllCited([
-        { text: "a", cite: { page: 1, start: 0, end: 1 } },
-        { text: "b", cite: { page: 2, start: 0, end: 1 } },
-      ])
-    ).not.toThrow();
-  });
-
-  it("flowchart fallback keeps 4 rows for assistive tech", () => {
-    expect(obligationSteps([])).toHaveLength(4);
+    expect(results).toHaveNoViolations();
   });
 });

@@ -33,7 +33,7 @@ export default function Home() {
             animate={{ opacity: 1, y: 0 }}
             className="inline-flex items-center gap-2 rounded-full border border-[#8c7e6b]/45 bg-[#eae3d2]/70 px-5 py-1.5 text-xs font-bold uppercase tracking-[0.18em] text-[#155e54] shadow-sm"
           >
-            <Sparkles size={13} className="text-[#84cc16]" />
+            <Sparkles size={13} aria-hidden="true" className="text-[#84cc16]" />
             LEGAL INTELLIGENCE • ACTIVE WORKSPACE: {companyId.toUpperCase()}
           </motion.div>
 
@@ -77,7 +77,7 @@ export default function Home() {
               className="inline-flex h-13 items-center gap-2.5 rounded-full bg-[#155e54] px-8 font-bold text-xs uppercase tracking-wider text-white shadow-lg hover:bg-[#84cc16] hover:scale-105 active:scale-95 transition-all"
             >
               Start With Upload
-              <ArrowRight size={14} />
+              <ArrowRight size={14} aria-hidden="true" />
             </button>
             <Link
               to="/chat"
@@ -95,7 +95,7 @@ export default function Home() {
         {/* Feature Card 1 */}
         <div className="parchment-card p-8 space-y-4 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group select-text">
           <div className="w-12 h-12 rounded-2xl bg-[#155e54]/10 text-[#155e54] flex items-center justify-center">
-            <FileText size={22} strokeWidth={2.3} />
+            <FileText size={22} strokeWidth={2.3} aria-hidden="true" />
           </div>
           <h3 className="font-headline font-bold text-lg text-[#2d261e]">Clinical Ingestion</h3>
           <p className="text-xs text-[#8c7e6b] leading-relaxed font-medium">
@@ -106,7 +106,7 @@ export default function Home() {
         {/* Feature Card 2 */}
         <div className="parchment-card p-8 space-y-4 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group select-text">
           <div className="w-12 h-12 rounded-2xl bg-[#155e54]/10 text-[#155e54] flex items-center justify-center">
-            <ShieldCheck size={22} strokeWidth={2.3} className="text-[#84cc16]" />
+            <ShieldCheck size={22} strokeWidth={2.3} aria-hidden="true" className="text-[#84cc16]" />
           </div>
           <h3 className="font-headline font-bold text-lg text-[#2d261e]">Risk Leveling</h3>
           <p className="text-xs text-[#8c7e6b] leading-relaxed font-medium">
@@ -117,7 +117,7 @@ export default function Home() {
         {/* Feature Card 3 */}
         <div className="parchment-card p-8 space-y-4 hover:-translate-y-1 transition-transform duration-300 relative overflow-hidden group select-text">
           <div className="w-12 h-12 rounded-2xl bg-[#155e54]/10 text-[#155e54] flex items-center justify-center">
-            <HelpCircle size={22} strokeWidth={2.3} />
+            <HelpCircle size={22} strokeWidth={2.3} aria-hidden="true" />
           </div>
           <h3 className="font-headline font-bold text-lg text-[#2d261e]">Verbatim Citations</h3>
           <p className="text-xs text-[#8c7e6b] leading-relaxed font-medium">

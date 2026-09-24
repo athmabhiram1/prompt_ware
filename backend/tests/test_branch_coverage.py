@@ -13,6 +13,7 @@ from fastapi.testclient import TestClient
 
 def test_health_endpoints():
     from app.routers import health
+
     app = FastAPI()
     app.include_router(health.router)
     client = TestClient(app)
@@ -31,6 +32,7 @@ def test_health_endpoints():
 
 def test_health_helpers_branch():
     from app.routers.health import _check_url_target, _scan_preindex, _tcp_reachable
+
     s = _check_url_target("", 5432)
     assert s.configured is False
     s2 = _check_url_target("not-a-url", 5432)
@@ -47,7 +49,12 @@ def test_health_helpers_branch():
 
 def test_upload_guard_branches():
     from fastapi import HTTPException
-    from app.core.upload_guard import check_content_length_header, validate_upload, MAX_PDF_BYTES
+    from app.core.upload_guard import (
+        check_content_length_header,
+        validate_upload,
+        MAX_PDF_BYTES,
+    )
+
     check_content_length_header(None)
     check_content_length_header("abc")
     check_content_length_header("  ")
@@ -67,19 +74,38 @@ def test_upload_guard_branches():
         validate_upload("a.pdf", "application/pdf", b"NOTPDF")
     assert e.value.status_code == 422
     with pytest.raises(HTTPException) as e:
-        validate_upload("a.pdf", "application/pdf", b"%PDF-1.4\n" + b"x" * (MAX_PDF_BYTES + 1))
+        validate_upload(
+            "a.pdf", "application/pdf", b"%PDF-1.4\n" + b"x" * (MAX_PDF_BYTES + 1)
+        )
     assert e.value.status_code == 413
     validate_upload("a.pdf", "application/pdf", b"%PDF-1.4 hello")
 
 
 def test_redline_branches():
     from app.engine.redline import to_redlines_json, build_redline_docx
+
     deltas = [
-        {"label": "added", "cites": [{"rule_id": "R01", "excerpt": "new", "start": 0, "end": 3, "side": "v2"}]},
-        {"label": "deleted", "cites": [{"rule_id": "R02", "excerpt": "old", "start": 0, "end": 3, "side": "v1"}]},
+        {
+            "label": "added",
+            "cites": [
+                {"rule_id": "R01", "excerpt": "new", "start": 0, "end": 3, "side": "v2"}
+            ],
+        },
+        {
+            "label": "deleted",
+            "cites": [
+                {"rule_id": "R02", "excerpt": "old", "start": 0, "end": 3, "side": "v1"}
+            ],
+        },
         {"label": "cosmetic", "cites": []},
         {"label": "same", "cites": []},
-        {"label": "modify", "cites": [{"rule_id": "R03", "excerpt": "a", "start": 0, "end": 1, "side": "v1"}, {"rule_id": "R03", "excerpt": "b", "start": 0, "end": 1, "side": "v2"}]},
+        {
+            "label": "modify",
+            "cites": [
+                {"rule_id": "R03", "excerpt": "a", "start": 0, "end": 1, "side": "v1"},
+                {"rule_id": "R03", "excerpt": "b", "start": 0, "end": 1, "side": "v2"},
+            ],
+        },
     ]
     red = to_redlines_json(deltas)
     assert len(red.items) == 3
@@ -92,6 +118,7 @@ def test_redline_branches():
 def test_contradict_and_rules_edges():
     from app.engine.contradict import detect
     from app.engine.rules import scan
+
     c = detect("", findings=[])
     assert isinstance(c, list)
     r = scan("This is a plain agreement with rent 100000 and deposit 50000.")
@@ -100,6 +127,7 @@ def test_contradict_and_rules_edges():
 
 def test_prompts_and_vec_pg_edges():
     from app.rag.prompts import split_claims, protocol_errors, refuse
+
     claims = split_claims("answer is yes {cite:lease1:p1:0}.")
     assert len(claims) >= 1
     errs = protocol_errors(claims, known_ids={"lease1:p1:0"})
@@ -107,6 +135,7 @@ def test_prompts_and_vec_pg_edges():
     msg = refuse("NO_EVIDENCE")
     assert isinstance(msg, str)
     from app.rag.vec_pg import resolve_backend, get_store
+
     assert resolve_backend() in ("pg", "memory")
     store = get_store()
     assert store is not None
@@ -115,6 +144,7 @@ def test_prompts_and_vec_pg_edges():
 def test_simplify_branches():
     from app.routers.simplify import SimplifyRequest, simplify_text, load_doc_text
     from pydantic import ValidationError
+
     with pytest.raises(ValidationError):
         SimplifyRequest(level="99", text="hello")
     with pytest.raises(ValidationError):
@@ -124,6 +154,7 @@ def test_simplify_branches():
     with pytest.raises(ValueError):
         simplify_text("   ", level="8")
     from fastapi import HTTPException
+
     with pytest.raises(HTTPException) as e:
         load_doc_text("no-such-doc-xyz-123")
     assert e.value.status_code == 404
